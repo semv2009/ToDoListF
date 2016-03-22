@@ -12,7 +12,10 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        var task :Task = Task(name: "firsd", descriptionTask: "go to univrity", date: NSDate(), importance: Importance.Necessary)
+        print(task)
+        task.descriptionTask = "i wanna to fly"
+        print(task)
     }
 
     override func didReceiveMemoryWarning() {
