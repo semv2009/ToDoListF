@@ -6,7 +6,75 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Список дел-->
+        <!--Create new task-->
+        <scene sceneID="RAS-w5-ghB">
+            <objects>
+                <viewController id="374-f2-zth" customClass="CreateNewTaskViewController" customModule="ToDoList" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ws3-gv-3Vz"/>
+                        <viewControllerLayoutGuide type="bottom" id="rzR-BV-Zej"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="P13-wk-hJE">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Date" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="h45-AH-9YY">
+                                <rect key="frame" x="20" y="285" width="560" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="374-f2-zth" id="krU-Jn-73p"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ipQ-Ef-ZF7">
+                                <rect key="frame" x="20" y="230" width="560" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="374-f2-zth" id="M0u-7m-FaJ"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Importance" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3JO-Tp-Ast">
+                                <rect key="frame" x="20" y="340" width="560" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="374-f2-zth" id="noW-Z4-I4W"/>
+                                </connections>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="leadingMargin" secondItem="h45-AH-9YY" secondAttribute="leading" id="0pt-VX-Hh3"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ipQ-Ef-ZF7" secondAttribute="trailing" id="4SI-qo-DeW"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="h45-AH-9YY" secondAttribute="trailing" id="5EE-mB-SUu"/>
+                            <constraint firstItem="h45-AH-9YY" firstAttribute="centerY" secondItem="P13-wk-hJE" secondAttribute="centerY" id="H4W-Zv-5zM"/>
+                            <constraint firstItem="h45-AH-9YY" firstAttribute="top" secondItem="ipQ-Ef-ZF7" secondAttribute="bottom" constant="25" id="MOF-WT-UAV"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="3JO-Tp-Ast" secondAttribute="trailing" id="fnT-hM-pPN"/>
+                            <constraint firstItem="3JO-Tp-Ast" firstAttribute="top" secondItem="h45-AH-9YY" secondAttribute="bottom" constant="25" id="prE-sd-SmC"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="ipQ-Ef-ZF7" secondAttribute="leading" id="r9q-vb-n8q"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="3JO-Tp-Ast" secondAttribute="leading" id="vQ4-NR-NK7"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Create new task" id="rtw-Ez-Hsv">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="Ach-yz-BWq">
+                            <connections>
+                                <segue destination="Evs-Zp-Wyd" kind="unwind" unwindAction="unwideTask:" id="kYV-xE-Rud"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="dateTextField" destination="h45-AH-9YY" id="jNT-g9-2Do"/>
+                        <outlet property="importanceTextField" destination="3JO-Tp-Ast" id="kUJ-vo-kEt"/>
+                        <outlet property="nameTextField" destination="ipQ-Ef-ZF7" id="RQj-CH-rGp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3bf-bI-nZF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="Evs-Zp-Wyd" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="1099" y="-547"/>
+        </scene>
+        <!--Tasks list-->
         <scene sceneID="O9e-HR-RUF">
             <objects>
                 <tableViewController id="zRT-FK-oqM" customClass="TaskTableViewController" customModule="ToDoList" customModuleProvider="target" sceneMemberID="viewController">
@@ -99,10 +167,10 @@
                             <outlet property="delegate" destination="zRT-FK-oqM" id="Rur-mG-TgE"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Список дел" id="StO-Ea-9tq">
+                    <navigationItem key="navigationItem" title="Tasks list" id="StO-Ea-9tq">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="wN8-px-HJk">
                             <connections>
-                                <segue destination="qB1-7V-bMm" kind="show" id="iad-kF-mzU"/>
+                                <segue destination="374-f2-zth" kind="show" id="n7H-qZ-L8l"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

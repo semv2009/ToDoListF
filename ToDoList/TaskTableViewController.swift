@@ -15,12 +15,12 @@ class TaskTableViewController: UITableViewController {
     }
     
     @IBAction func unwideTask(segue:UIStoryboardSegue){
-        if let ctc = segue.sourceViewController as? CreateTaskViewController{
-            let newTask = ctc.task!
-            ManagerTask.sharedInstance().addTask(newTask)
-            tableView.reloadData()
-            print(newTask)
-        }
+//        if let ctc = segue.sourceViewController as? CreateTaskViewController{
+//            let newTask = ctc.task!
+//            ManagerTask.sharedInstance().addTask(newTask)
+//            tableView.reloadData()
+//            print(newTask)
+//        }
     }
     
     // MARK: - Table view data source
