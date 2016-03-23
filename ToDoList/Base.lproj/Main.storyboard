@@ -59,12 +59,13 @@
                     <navigationItem key="navigationItem" title="Create new task" id="rtw-Ez-Hsv">
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="Ach-yz-BWq">
                             <connections>
-                                <segue destination="Evs-Zp-Wyd" kind="unwind" unwindAction="unwideTask:" id="kYV-xE-Rud"/>
+                                <segue destination="Evs-Zp-Wyd" kind="unwind" identifier="unwideTask" unwindAction="unwideTask:" id="kYV-xE-Rud"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="dateTextField" destination="h45-AH-9YY" id="jNT-g9-2Do"/>
+                        <outlet property="doneButton" destination="Ach-yz-BWq" id="ICI-y8-wGo"/>
                         <outlet property="importanceTextField" destination="3JO-Tp-Ast" id="kUJ-vo-kEt"/>
                         <outlet property="nameTextField" destination="ipQ-Ef-ZF7" id="RQj-CH-rGp"/>
                     </connections>
@@ -72,7 +73,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3bf-bI-nZF" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Evs-Zp-Wyd" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1099" y="-547"/>
+            <point key="canvasLocation" x="1949" y="144"/>
         </scene>
         <!--Tasks list-->
         <scene sceneID="O9e-HR-RUF">
@@ -81,7 +82,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" indicatorStyle="black" dataMode="prototypes" style="grouped" allowsSelectionDuringEditing="YES" rowHeight="86" sectionHeaderHeight="18" sectionFooterHeight="18" id="2dZ-k1-Hh1">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="separatorColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <textField key="tableHeaderView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search task" textAlignment="center" minimumFontSize="17" id="I6i-Ps-9gb">
@@ -98,16 +99,11 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="85"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WNe-xd-dMY">
-                                            <rect key="frame" x="71" y="20" width="521" height="29"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kW1-7O-Uel">
-                                            <rect key="frame" x="71" y="57" width="521" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WNe-xd-dMY">
+                                            <rect key="frame" x="71" y="20" width="521" height="55"/>
+                                            <string key="text">На праймериз в Юте сенатор США от штата Техас, кандидат в президенты от Республиканской партии Тед Круз одержал победу над миллиардером Дональдом Трампом. Об этом в среду, 23 марта, </string>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6FT-Rd-l2e">
@@ -134,15 +130,13 @@
                                         </view>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="kW1-7O-Uel" secondAttribute="trailing" id="4uX-lQ-w1v"/>
                                         <constraint firstItem="WNe-xd-dMY" firstAttribute="top" secondItem="Wes-H0-lZt" secondAttribute="topMargin" constant="12" id="EYB-Sz-yNz"/>
                                         <constraint firstItem="6FT-Rd-l2e" firstAttribute="top" secondItem="Wes-H0-lZt" secondAttribute="topMargin" constant="12" id="IuO-Lh-qf0"/>
-                                        <constraint firstItem="kW1-7O-Uel" firstAttribute="top" secondItem="WNe-xd-dMY" secondAttribute="bottom" constant="8" id="beZ-pC-Pm7"/>
                                         <constraint firstItem="WNe-xd-dMY" firstAttribute="leading" secondItem="6FT-Rd-l2e" secondAttribute="trailing" constant="8" id="dkx-ik-29k"/>
-                                        <constraint firstItem="kW1-7O-Uel" firstAttribute="leading" secondItem="6FT-Rd-l2e" secondAttribute="trailing" constant="8" id="efR-Ij-29k"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="6FT-Rd-l2e" secondAttribute="bottom" constant="2" id="fdp-0s-Vxo"/>
                                         <constraint firstAttribute="leadingMargin" secondItem="6FT-Rd-l2e" secondAttribute="leading" id="hcf-en-c7i"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="6FT-Rd-l2e" secondAttribute="bottom" constant="12" id="oKP-qK-BlS"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="WNe-xd-dMY" secondAttribute="bottom" constant="2" id="txj-lX-fIR"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="WNe-xd-dMY" secondAttribute="trailing" id="ulG-iJ-b4t"/>
                                     </constraints>
                                     <variation key="default">
@@ -155,10 +149,10 @@
                                 <color key="backgroundColor" red="0.91956939860729947" green="0.92823543848167533" blue="0.92097135554860221" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <outlet property="dateLabel" destination="2yH-9r-OTy" id="QHj-UD-hU6"/>
-                                    <outlet property="descriptionLabel" destination="kW1-7O-Uel" id="liZ-FA-7wu"/>
                                     <outlet property="hourLabel" destination="yXf-6T-F1n" id="DAK-6T-WiE"/>
                                     <outlet property="nameLabel" destination="WNe-xd-dMY" id="6hg-KN-NCP"/>
                                     <outlet property="stikerView" destination="6FT-Rd-l2e" id="igK-2p-rp2"/>
+                                    <segue destination="374-f2-zth" kind="show" identifier="EditTask" id="X7F-ca-AIX"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -170,7 +164,7 @@
                     <navigationItem key="navigationItem" title="Tasks list" id="StO-Ea-9tq">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="wN8-px-HJk">
                             <connections>
-                                <segue destination="374-f2-zth" kind="show" id="n7H-qZ-L8l"/>
+                                <segue destination="374-f2-zth" kind="show" identifier="" id="n7H-qZ-L8l"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -191,29 +185,29 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BQ3-7O-jhe">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BQ3-7O-jhe">
                                 <rect key="frame" x="20" y="72" width="560" height="30"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Description" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Qjs-tG-NO8">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Description" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Qjs-tG-NO8">
                                 <rect key="frame" x="20" y="110" width="560" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="oD6-Gs-Kfd">
-                                <rect key="frame" x="0.0" y="148" width="600" height="216"/>
-                                <date key="date" timeIntervalSinceReferenceDate="479468206.80615199">
-                                    <!--2016-03-12 09:36:46 +0000-->
-                                </date>
-                            </datePicker>
-                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8fO-lh-0DV">
+                            <pickerView contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8fO-lh-0DV">
                                 <rect key="frame" x="0.0" y="372" width="600" height="216"/>
                                 <connections>
                                     <outlet property="dataSource" destination="qB1-7V-bMm" id="2gj-wk-4st"/>
                                     <outlet property="delegate" destination="qB1-7V-bMm" id="IYW-pB-Obu"/>
                                 </connections>
                             </pickerView>
+                            <datePicker contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="oD6-Gs-Kfd">
+                                <rect key="frame" x="0.0" y="148" width="600" height="216"/>
+                                <date key="date" timeIntervalSinceReferenceDate="479468206.80615199">
+                                    <!--2016-03-12 09:36:46 +0000-->
+                                </date>
+                            </datePicker>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -252,7 +246,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PhC-vY-vKU" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="1X2-aR-kGH" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1828" y="144"/>
+            <point key="canvasLocation" x="1114" y="984"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="kgv-xz-yDM">
@@ -273,4 +267,7 @@
             <point key="canvasLocation" x="297" y="144"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="X7F-ca-AIX"/>
+    </inferredMetricsTieBreakers>
 </document>

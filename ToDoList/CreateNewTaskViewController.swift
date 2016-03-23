@@ -11,56 +11,52 @@ import UIKit
 class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPickerViewDelegate{
     
     var task:Task?
+
     let importanceArray = Importance.allValue
+    var isEditTask: Bool = false
     
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var dateTextField: UITextField!
     @IBOutlet weak var importanceTextField: UITextField!
+    @IBOutlet weak var doneButton: UIBarButtonItem!
     
-    var importancePiker: UIPickerView{
-        didSet{
-            importancePiker.delegate = self
-        }
-    }
+    var dataPiker = UIDatePicker()
+    var importancePiker: UIPickerView?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        doneButton.enabled = false
+        importancePiker = UIPickerView()
+        importancePiker!.delegate = self
+        
+        if task != nil {
+            updateUI()
+        }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "unwideTask" {
-            //if nameLabel.text?.characters.count != 0{
-                let name = nameLabel.text!
-           // }
-            //if descriptionLabel.text?.characters.count != 0{
-                let description = descriptionLabel.text!
-            //}
-            let importance = importanceArray[importancePiker.selectedRowInComponent(0)]
-            
-            print(importance)
-            task = Task(name: name, descriptionTask: description, date: dataPiker.date, importance: Importance(rawValue: importance) ?? .Usually)
+            print("Done")
+            if nameTextField.text?.characters.count > 0{
+                let name = nameTextField.text
+                let date: NSDate? = (dateTextField.text?.characters.count > 0) ? dataPiker.date : nil
+                let importance: Importance? = (importanceTextField.text?.characters.count > 0) ? Importance(rawValue: importanceTextField.text!) : nil
+                task = Task(name: name!, date: date, importance: importance)
+            }
         }
     }
     
     // MARK: - TextFiend Delegate
-//    func textFieldShouldReturn(textField: UITextField) -> Bool {
-//        textField.resignFirstResponder()
-//        return true
-//    }
     
     func textFieldDidBeginEditing(textField: UITextField) {
         if textField == dateTextField{
-            let dataPiker = UIDatePicker()
             textField.inputView = dataPiker
             dataPiker.addTarget(self, action: "datePikerChanged:", forControlEvents: .ValueChanged)
         }else if textField == importanceTextField{
             textField.inputView = importancePiker
-            importancePiker.addTarget(self, action: "importancePikerChanged:", forControlEvents: .ValueChanged)
+        }else if textField == nameTextField{
+            print("Text")
+            textField.addTarget(self, action: "nameTextChanged:", forControlEvents: .EditingChanged)
         }
     }
     
@@ -70,8 +66,8 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPicker
         dateTextField.text = formatter.stringFromDate(sender.date)
     }
     
-    func importancePikerChanged(sender:UIPickerView){
-        importanceTextField.text = importanceArray[sender.selectedRowInComponent(0)]
+    func nameTextChanged(sender:UITextField){
+        doneButton.enabled = (sender.text?.characters.count > 0) ? true : false
     }
     
     // MARK: - Piker View
@@ -85,6 +81,35 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPicker
     
     func pickerView(pickerView: UIPickerView!, titleForRow row: Int, forComponent component: Int) -> String!{
         return importanceArray[row]
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        importanceTextField.text = importanceArray[row]
+    }
+    
+    // MARK: - Helper
+    
+    func updateUI(){
+        nameTextField.text = task?.name
+        self.title = "Edit task"
+        if task?.date != nil{
+            let formatter = NSDateFormatter()
+            formatter.dateStyle = .FullStyle
+            dateTextField.text = formatter.stringFromDate(task!.date!)
+            dataPiker.date = (task?.date)!
+        }
+        if task?.importance != nil{
+            importanceTextField.text = task?.importance?.rawValue
+        }
+        doneButton.enabled = true
+        isEditTask = true
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        closeKeyborad()
+    }
+    func closeKeyborad(){
+        self.view.endEditing(true)
     }
     /*
     // MARK: - Navigation

@@ -33,8 +33,7 @@ class ManagerTask {
         return self.manager!
     }
     
-    func saveTask(){
-        //save to NSUserDefaults
+    func saveTasks(){
         let encodedData = NSKeyedArchiver.archivedDataWithRootObject(self.tasks!)
         defaults.setObject(encodedData, forKey: Store.tasksKey)
         defaults.synchronize()
@@ -46,6 +45,11 @@ class ManagerTask {
     
     func removeTask(index:Int){
         tasks?.removeAtIndex(index)
+    }
+    
+    func saveTask(task:Task,index:Int){
+        tasks?.removeAtIndex(index)
+        tasks?.insert(task, atIndex: index)
     }
     private struct Store{
         static let tasksKey = "TasksKey"

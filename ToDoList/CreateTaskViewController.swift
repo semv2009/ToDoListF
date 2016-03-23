@@ -52,7 +52,7 @@ class CreateTaskViewController: UIViewController,UIPickerViewDelegate{
             let importance = importanceArray[importancePiker.selectedRowInComponent(0)]
             
             print(importance)
-            task = Task(name: name, descriptionTask: description, date: dataPiker.date, importance: Importance(rawValue: importance) ?? .Usually)
+            //task = Task(name: name, descriptionTask: description, date: dataPiker.date, importance: Importance(rawValue: importance) ?? .Usually)
         }
         
     }

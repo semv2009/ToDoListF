@@ -15,18 +15,23 @@ class TaskTableViewController: UITableViewController {
     }
     
     @IBAction func unwideTask(segue:UIStoryboardSegue){
-//        if let ctc = segue.sourceViewController as? CreateTaskViewController{
-//            let newTask = ctc.task!
-//            ManagerTask.sharedInstance().addTask(newTask)
-//            tableView.reloadData()
-//            print(newTask)
-//        }
+        if let ctc = segue.sourceViewController as? CreateNewTaskViewController{
+            let task = ctc.task!
+            if(ctc.isEditTask){
+                ManagerTask.sharedInstance().saveTask(task, index: (tableView.indexPathForSelectedRow?.row)!)
+            }else{
+                ManagerTask.sharedInstance().addTask(task)
+            }
+            tableView.reloadData()
+            print(task)
+        }
     }
     
     // MARK: - Table view data source
     
     private struct StoreBoard{
         static let TableCellIdentifier = "TaskCell"
+        static let EditTaskSegue = "EditTask"
     }
 
     
@@ -67,6 +72,20 @@ class TaskTableViewController: UITableViewController {
     }
     
 
+    // MARK: - Navigation
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == StoreBoard.EditTaskSegue{
+            if let cell = sender as? TaskTableViewCell{
+                if let cnt = segue.destinationViewController as? CreateNewTaskViewController{
+                    print("Give task")
+                    cnt.task = cell.task
+                }
+            }
+        }
+    }
+
+    
     /*
     // Override to support rearranging the table view.
     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
@@ -82,14 +101,6 @@ class TaskTableViewController: UITableViewController {
     }
     */
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    
 
 }

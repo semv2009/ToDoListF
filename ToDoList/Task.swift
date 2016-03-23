@@ -17,52 +17,39 @@ class Task:NSObject,NSCoding{
         }
     }
     
-    var descriptionTask: String{
-        willSet{
-            if newValue.characters.count > 0{
-                self.descriptionTask = newValue
-            }
-        }
-    }
+    var date: NSDate?
     
-    var date: NSDate
-    
-    var importance: Importance
+    var importance: Importance?
     
     override var description: String{
-        return "Name:\(self.name) Description:\(descriptionTask) Date:\(date.description) Importance:\(importance)"
+        return "Name:\(self.name) "
     }
     
-    
-    
-    init(name:String,descriptionTask:String,date:NSDate,importance:Importance){
+    init(name:String,date:NSDate?,importance:Importance?){
         self.name = name
-        self.descriptionTask = descriptionTask
         self.date = date
         self.importance = importance
     }
     
     required convenience init(coder aDecoder: NSCoder) {
         let name = aDecoder.decodeObjectForKey("name") as! String
-        let descriptionTask = aDecoder.decodeObjectForKey("descriptionTask") as! String
-        let date = aDecoder.decodeObjectForKey("date") as! NSDate
-        let importance = Importance(rawValue: (aDecoder.decodeObjectForKey( "importance" ) as! String)) ?? .Usually
-        self.init(name: name,descriptionTask: descriptionTask,date: date,importance: importance)
+        let date = aDecoder.decodeObjectForKey("date") as? NSDate
+        let importance = ((aDecoder.decodeObjectForKey( "importance" ) as? String) != nil) ? Importance(rawValue: ((aDecoder.decodeObjectForKey( "importance" ) as! String))) :nil
+        self.init(name: name,date: date,importance: importance)
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(self.name, forKey: "name")
-        aCoder.encodeObject(self.descriptionTask, forKey: "descriptionTask")
         aCoder.encodeObject(self.date, forKey: "date")
-        aCoder.encodeObject(self.importance.rawValue, forKey: "importance")
+        aCoder.encodeObject((self.importance != nil) ? self.importance!.rawValue: nil, forKey: "importance")
     }
 }
 public enum Importance: String{
-    case Urgently = "Urgently"
-    case NotNecessary = "NotNecessary"
-    case Necessary = "Necessary"
-    case Usually = "Usually"
-    static let allValue = [Urgently.rawValue,NotNecessary.rawValue,Necessary.rawValue,Usually.rawValue]}
+    case Low = "Low"
+    case Normal = "Normal"
+    case Hight = "Hight"
+    static let allValue = [Low.rawValue,Normal.rawValue,Hight.rawValue]
+}
 
 
 
