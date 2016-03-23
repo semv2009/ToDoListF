@@ -39,6 +39,10 @@ class ManagerTask {
         defaults.synchronize()
     }
     
+    func getTask(index:Int) -> Task{
+        return self.tasks![index]
+    }
+    
     func addTask(task:Task){
         tasks?.append(task)
     }

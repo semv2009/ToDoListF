@@ -56,9 +56,17 @@ class TaskTableViewController: UITableViewController {
         return true
     }
 
-
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let nameAction = (ManagerTask.sharedInstance().getTask(indexPath.row).mark) ? "UnResolve" : "Resolve"
+        var checkAction = UITableViewRowAction(style: .Normal, title: nameAction) { (action:UITableViewRowAction, indexPath:NSIndexPath) -> Void in
+            let cell = tableView.cellForRowAtIndexPath(indexPath) as! TaskTableViewCell
+            ManagerTask.sharedInstance().getTask(indexPath.row).mark = !ManagerTask.sharedInstance().getTask(indexPath.row).mark
+            let mark = ManagerTask.sharedInstance().getTask(indexPath.row).mark
+            cell.mark = mark
+        }
+        checkAction.backgroundColor = UIColor.greenColor()
+        
+        var deleteAction = UITableViewRowAction(style: .Normal, title: "Delete") { (action:UITableViewRowAction, indexPath:NSIndexPath) -> Void in
             let alert = UIAlertController(title: "Предупреждение", message: "Вы уверены,что хотите удалить задачу?", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Удалить", style: UIAlertActionStyle.Destructive, handler: { (UIAlertAction) -> Void in
                 ManagerTask.sharedInstance().removeTask(indexPath.row)
@@ -69,6 +77,9 @@ class TaskTableViewController: UITableViewController {
             self.presentViewController(alert, animated: true, completion: nil)
 
         }
+        deleteAction.backgroundColor = UIColor.redColor()
+        
+        return [deleteAction,checkAction]
     }
     
 
@@ -78,7 +89,6 @@ class TaskTableViewController: UITableViewController {
         if segue.identifier == StoreBoard.EditTaskSegue{
             if let cell = sender as? TaskTableViewCell{
                 if let cnt = segue.destinationViewController as? CreateNewTaskViewController{
-                    print("Give task")
                     cnt.task = cell.task
                 }
             }

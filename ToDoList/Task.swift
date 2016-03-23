@@ -25,23 +25,28 @@ class Task:NSObject,NSCoding{
         return "Name:\(self.name) "
     }
     
-    init(name:String,date:NSDate?,importance:Importance?){
+    var mark:Bool
+    
+    init(name:String,date:NSDate?,importance:Importance?,mark:Bool){
         self.name = name
         self.date = date
         self.importance = importance
+        self.mark = mark
     }
     
     required convenience init(coder aDecoder: NSCoder) {
         let name = aDecoder.decodeObjectForKey("name") as! String
         let date = aDecoder.decodeObjectForKey("date") as? NSDate
         let importance = ((aDecoder.decodeObjectForKey( "importance" ) as? String) != nil) ? Importance(rawValue: ((aDecoder.decodeObjectForKey( "importance" ) as! String))) :nil
-        self.init(name: name,date: date,importance: importance)
+        let mark = aDecoder.decodeObjectForKey("mark") as! Bool
+        self.init(name: name,date: date,importance: importance,mark:mark)
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(self.name, forKey: "name")
         aCoder.encodeObject(self.date, forKey: "date")
         aCoder.encodeObject((self.importance != nil) ? self.importance!.rawValue: nil, forKey: "importance")
+        aCoder.encodeObject(self.mark, forKey: "mark")
     }
 }
 public enum Importance: String{

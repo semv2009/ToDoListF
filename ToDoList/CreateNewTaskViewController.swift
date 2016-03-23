@@ -19,6 +19,7 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPicker
     @IBOutlet weak var dateTextField: UITextField!
     @IBOutlet weak var importanceTextField: UITextField!
     @IBOutlet weak var doneButton: UIBarButtonItem!
+    @IBOutlet weak var markSegmentedControl: UISegmentedControl!
     
     var dataPiker = UIDatePicker()
     var importancePiker: UIPickerView?
@@ -28,11 +29,12 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPicker
         doneButton.enabled = false
         importancePiker = UIPickerView()
         importancePiker!.delegate = self
-        
         if task != nil {
             updateUI()
         }
     }
+    
+
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "unwideTask" {
@@ -41,7 +43,11 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPicker
                 let name = nameTextField.text
                 let date: NSDate? = (dateTextField.text?.characters.count > 0) ? dataPiker.date : nil
                 let importance: Importance? = (importanceTextField.text?.characters.count > 0) ? Importance(rawValue: importanceTextField.text!) : nil
-                task = Task(name: name!, date: date, importance: importance)
+                
+                let selectMarkIndex = markSegmentedControl.selectedSegmentIndex
+                let mark = (selectMarkIndex == 0 ) ? false : true
+                
+                task = Task(name: name!, date: date, importance: importance,mark: mark)
             }
         }
     }
@@ -90,19 +96,23 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPicker
     // MARK: - Helper
     
     func updateUI(){
-        nameTextField.text = task?.name
         self.title = "Edit task"
+        
+        nameTextField.text = task?.name
         if task?.date != nil{
             let formatter = NSDateFormatter()
             formatter.dateStyle = .FullStyle
             dateTextField.text = formatter.stringFromDate(task!.date!)
             dataPiker.date = (task?.date)!
         }
+        
         if task?.importance != nil{
             importanceTextField.text = task?.importance?.rawValue
         }
+        
         doneButton.enabled = true
         isEditTask = true
+        markSegmentedControl.selectedSegmentIndex = task!.mark ? 1 : 0
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {

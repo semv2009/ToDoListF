@@ -15,6 +15,19 @@ class TaskTableViewCell: UITableViewCell {
             updateUI()
         }
     }
+    
+    var mark:Bool = false{
+        didSet{
+            task?.mark = mark
+            if mark {
+                let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: (task?.name)!)
+                attributeString.addAttribute(NSStrikethroughStyleAttributeName, value: 2, range: NSMakeRange(0, attributeString.length))
+                nameLabel.attributedText = attributeString
+            }else{
+                nameLabel.text = task?.name
+            }
+        }
+    }
     @IBOutlet weak var nameLabel: UILabel!
     
     @IBOutlet weak var stikerView: UIView!
@@ -24,8 +37,7 @@ class TaskTableViewCell: UITableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     
     func updateUI(){
-        nameLabel.text = task?.name
-        
+        mark = (task?.mark)!
         let colorStiker:UIColor
         if task!.importance != nil{
             switch task!.importance!{
@@ -51,8 +63,12 @@ class TaskTableViewCell: UITableViewCell {
             dateLabel.text = ""
         }
         
+        
     }
     
+    func doubleClick(){
+        
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
