@@ -34,6 +34,13 @@ class Task:NSObject,NSCoding{
         self.mark = mark
     }
     
+    var orderMark:Int{
+        switch self.mark{
+            case true: return 1
+            case false: return 0
+        }
+    }
+    
     required convenience init(coder aDecoder: NSCoder) {
         let name = aDecoder.decodeObjectForKey("name") as! String
         let date = aDecoder.decodeObjectForKey("date") as? NSDate
@@ -53,6 +60,13 @@ public enum Importance: String{
     case Low = "Low"
     case Normal = "Normal"
     case Hight = "Hight"
+    var order: Int{
+        switch self{
+            case .Low: return 2
+            case .Normal: return 1
+            case .Hight: return 0
+        }
+    }
     static let allValue = [Low.rawValue,Normal.rawValue,Hight.rawValue]
 }
 

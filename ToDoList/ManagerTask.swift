@@ -39,12 +39,43 @@ class ManagerTask {
         defaults.synchronize()
     }
     
+    func saveTaskNew(newTask:Task){
+        var index = 0
+        if tasks?.count > 0{
+            while index < tasks!.count && newTask.orderMark > tasks![index].orderMark{
+                index++
+            }
+            
+            while index < tasks!.count && newTask.importance?.order ?? 4 > tasks![index].importance?.order ?? 4{
+                index++
+            }
+            
+            while index < tasks!.count && newTask.date?.timeIntervalSince1970 ?? 999999345345953453999999 > tasks![index].date?.timeIntervalSince1970 ?? 999999345345953453999999{
+                print(newTask.date?.timeIntervalSince1970)
+                index++
+            }
+            tasks?.append(newTask)
+            var count = tasks!.count - 2
+            while count > index{
+                tasks![count+1] = tasks![count]
+                count--
+            }
+            
+            tasks![index] = newTask
+        }else{
+            tasks?.append(newTask)
+        }
+        print("Index = \(index)")
+        
+    }
+    
     func getTask(index:Int) -> Task{
         return self.tasks![index]
     }
     
     func addTask(task:Task){
-        tasks?.append(task)
+        saveTaskNew(task)
+        //tasks?.append(task)
     }
     
     func removeTask(index:Int){
