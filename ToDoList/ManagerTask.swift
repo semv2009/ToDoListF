@@ -15,7 +15,6 @@ class ManagerTask {
     
     private init(){
         if self.tasks == nil{
-            //load from NSUserDefaults
             if let decoded  = defaults.objectForKey(Store.tasksKey) as? NSData{
                 if let loadTasks = NSKeyedUnarchiver.unarchiveObjectWithData(decoded) as? [Task]{
                     self.tasks = loadTasks
@@ -39,31 +38,30 @@ class ManagerTask {
         defaults.synchronize()
     }
     
-    func saveTaskNew(newTask:Task){
+    func saveTask(task:Task){
         var index = 0
         if tasks?.count > 0{
-            while index < tasks!.count && newTask.orderMark > tasks![index].orderMark{
+            while index < tasks!.count && task.orderMark > tasks![index].orderMark{
                 index++
             }
             
-            while index < tasks!.count && newTask.importance?.order ?? Importance.orderNil > tasks![index].importance?.order ?? Importance.orderNil{
+            while index < tasks!.count && task.importance?.order ?? Importance.orderNil > tasks![index].importance?.order ?? Importance.orderNil{
                 index++
             }
             
-            while index < tasks!.count && newTask.date?.timeIntervalSince1970 ?? 999999345345953453999999 > tasks![index].date?.timeIntervalSince1970 ?? 999999345345953453999999 && newTask.importance?.order ?? Importance.orderNil == tasks![index].importance?.order ?? Importance.orderNil{
-                print(newTask.date?.timeIntervalSince1970)
+            while index < tasks!.count && task.date?.timeIntervalSince1970 ?? Constants.maxDateInt > tasks![index].date?.timeIntervalSince1970 ?? Constants.maxDateInt && task.importance?.order ?? Importance.orderNil == tasks![index].importance?.order ?? Importance.orderNil{
                 index++
             }
-            tasks?.append(newTask)
+            tasks?.append(task)
             var count = tasks!.count - 2
             while count >= index{
                 tasks![count+1] = tasks![count]
                 count--
             }
             
-            tasks![index] = newTask
+            tasks![index] = task
         }else{
-            tasks?.append(newTask)
+            tasks?.append(task)
         }
     }
     
@@ -72,7 +70,7 @@ class ManagerTask {
     }
     
     func addTask(task:Task){
-        saveTaskNew(task)
+        saveTask(task)
         //tasks?.append(task)
     }
     
@@ -82,9 +80,9 @@ class ManagerTask {
     
     func saveTask(task:Task,index:Int){
         tasks?.removeAtIndex(index)
-        saveTaskNew(task)
-        //tasks?.insert(task, atIndex: index)
+        saveTask(task)
     }
+    
     private struct Store{
         static let tasksKey = "TasksKey"
     }

@@ -38,6 +38,7 @@ class TaskTableViewCell: UITableViewCell {
     
     func updateUI(){
         mark = (task?.mark)!
+        
         let colorStiker:UIColor
         if task!.importance != nil{
             switch task!.importance!{
@@ -65,20 +66,4 @@ class TaskTableViewCell: UITableViewCell {
         
         
     }
-    
-    func doubleClick(){
-        
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }

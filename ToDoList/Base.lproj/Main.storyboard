@@ -90,21 +90,15 @@
         <scene sceneID="O9e-HR-RUF">
             <objects>
                 <tableViewController id="zRT-FK-oqM" customClass="TaskTableViewController" customModule="ToDoList" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" indicatorStyle="black" dataMode="prototypes" style="grouped" allowsSelectionDuringEditing="YES" rowHeight="86" sectionHeaderHeight="18" sectionFooterHeight="18" id="2dZ-k1-Hh1">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" indicatorStyle="black" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="86" sectionHeaderHeight="28" sectionFooterHeight="28" id="2dZ-k1-Hh1">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="separatorColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        <textField key="tableHeaderView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search task" textAlignment="center" minimumFontSize="17" id="I6i-Ps-9gb">
-                            <rect key="frame" x="0.0" y="64" width="600" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits"/>
-                        </textField>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="gray" showsReorderControl="YES" indentationWidth="16" reuseIdentifier="TaskCell" rowHeight="86" id="hk8-sY-WZG" customClass="TaskTableViewCell" customModule="ToDoList" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="144" width="600" height="86"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="gray" showsReorderControl="YES" indentationWidth="16" reuseIdentifier="TaskCell" id="hk8-sY-WZG" customClass="TaskTableViewCell" customModule="ToDoList" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="600" height="86"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hk8-sY-WZG" id="Wes-H0-lZt">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="85"/>
@@ -185,81 +179,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Oxv-Xu-HN7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1109" y="144"/>
-        </scene>
-        <!--Создание-->
-        <scene sceneID="QPc-f9-Ya6">
-            <objects>
-                <viewController id="qB1-7V-bMm" customClass="CreateTaskViewController" customModule="ToDoList" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="pi3-Hw-6jw"/>
-                        <viewControllerLayoutGuide type="bottom" id="fVL-XQ-6f6"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="b32-dY-bcB">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BQ3-7O-jhe">
-                                <rect key="frame" x="20" y="72" width="560" height="30"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Description" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Qjs-tG-NO8">
-                                <rect key="frame" x="20" y="110" width="560" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <pickerView contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8fO-lh-0DV">
-                                <rect key="frame" x="0.0" y="372" width="600" height="216"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="qB1-7V-bMm" id="2gj-wk-4st"/>
-                                    <outlet property="delegate" destination="qB1-7V-bMm" id="IYW-pB-Obu"/>
-                                </connections>
-                            </pickerView>
-                            <datePicker contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="oD6-Gs-Kfd">
-                                <rect key="frame" x="0.0" y="148" width="600" height="216"/>
-                                <date key="date" timeIntervalSinceReferenceDate="479468206.80615199">
-                                    <!--2016-03-12 09:36:46 +0000-->
-                                </date>
-                            </datePicker>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="Qjs-tG-NO8" secondAttribute="trailing" id="9Fy-fR-an2"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="8fO-lh-0DV" secondAttribute="trailing" constant="-20" id="9jC-g8-3Dd"/>
-                            <constraint firstItem="8fO-lh-0DV" firstAttribute="top" secondItem="oD6-Gs-Kfd" secondAttribute="bottom" constant="8" id="AlX-hD-Kxd"/>
-                            <constraint firstItem="Qjs-tG-NO8" firstAttribute="top" secondItem="BQ3-7O-jhe" secondAttribute="bottom" constant="8" id="Gws-Fr-Y4P"/>
-                            <constraint firstItem="fVL-XQ-6f6" firstAttribute="top" secondItem="8fO-lh-0DV" secondAttribute="bottom" constant="12" id="L7u-LF-PoG"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="oD6-Gs-Kfd" secondAttribute="trailing" constant="-20" id="N7Y-Io-di3"/>
-                            <constraint firstItem="oD6-Gs-Kfd" firstAttribute="leading" secondItem="b32-dY-bcB" secondAttribute="leadingMargin" constant="-20" id="NTV-IP-wEA"/>
-                            <constraint firstItem="8fO-lh-0DV" firstAttribute="leading" secondItem="b32-dY-bcB" secondAttribute="leadingMargin" constant="-20" id="QU7-wO-wxs"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="BQ3-7O-jhe" secondAttribute="trailing" id="XrE-86-EJC"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="BQ3-7O-jhe" secondAttribute="leading" id="bMS-yO-8oO"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="Qjs-tG-NO8" secondAttribute="leading" id="eG4-Dm-Ta2"/>
-                            <constraint firstItem="oD6-Gs-Kfd" firstAttribute="top" secondItem="Qjs-tG-NO8" secondAttribute="bottom" constant="8" symbolic="YES" id="hxf-hZ-ZLw"/>
-                            <constraint firstItem="oD6-Gs-Kfd" firstAttribute="leading" secondItem="Qjs-tG-NO8" secondAttribute="trailing" constant="-580" id="l21-yp-xSN"/>
-                            <constraint firstItem="BQ3-7O-jhe" firstAttribute="top" secondItem="pi3-Hw-6jw" secondAttribute="bottom" constant="8" id="pGJ-3X-0ar"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Создание" id="6h0-gK-LTp">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="sRb-bh-2Yl">
-                            <connections>
-                                <action selector="back:" destination="qB1-7V-bMm" id="lOw-bJ-peu"/>
-                                <segue destination="1X2-aR-kGH" kind="unwind" identifier="unwideTask" unwindAction="unwideTask:" id="lnP-ns-TmN"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="dataPiker" destination="oD6-Gs-Kfd" id="jf1-q1-MkB"/>
-                        <outlet property="descriptionLabel" destination="Qjs-tG-NO8" id="y76-VQ-uCx"/>
-                        <outlet property="doneButton" destination="sRb-bh-2Yl" id="Fbx-TD-ntG"/>
-                        <outlet property="importancePiker" destination="8fO-lh-0DV" id="PXn-01-uAh"/>
-                        <outlet property="nameLabel" destination="BQ3-7O-jhe" id="ObV-aP-qx9"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="PhC-vY-vKU" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="1X2-aR-kGH" userLabel="Exit" sceneMemberID="exit"/>
-            </objects>
-            <point key="canvasLocation" x="1114" y="984"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="kgv-xz-yDM">

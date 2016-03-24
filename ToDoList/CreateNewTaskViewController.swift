@@ -34,11 +34,10 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPicker
         }
     }
     
-
+    // MARK: Navigator
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "unwideTask" {
-            print("Done")
             if nameTextField.text?.characters.count > 0{
                 let name = nameTextField.text
                 let date: NSDate? = (dateTextField.text?.characters.count > 0) ? dataPiker.date : nil
@@ -55,14 +54,13 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPicker
     // MARK: - TextFiend Delegate
     
     func textFieldDidBeginEditing(textField: UITextField) {
-        if textField == dateTextField{
-            textField.inputView = dataPiker
-            dataPiker.addTarget(self, action: "datePikerChanged:", forControlEvents: .ValueChanged)
-        }else if textField == importanceTextField{
-            textField.inputView = importancePiker
-        }else if textField == nameTextField{
-            print("Text")
-            textField.addTarget(self, action: "nameTextChanged:", forControlEvents: .EditingChanged)
+        switch textField{
+            case dateTextField:
+                textField.inputView = dataPiker
+                dataPiker.addTarget(self, action: "datePikerChanged:", forControlEvents: .ValueChanged)
+            case importanceTextField: textField.inputView = importancePiker
+            case nameTextField: textField.addTarget(self, action: "nameTextChanged:", forControlEvents: .EditingChanged)
+            default: break
         }
     }
     
@@ -85,7 +83,7 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPicker
         return importanceArray.count
     }
     
-    func pickerView(pickerView: UIPickerView!, titleForRow row: Int, forComponent component: Int) -> String!{
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?{
         return importanceArray[row]
     }
     
@@ -118,17 +116,9 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPicker
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         closeKeyborad()
     }
+    
     func closeKeyborad(){
         self.view.endEditing(true)
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

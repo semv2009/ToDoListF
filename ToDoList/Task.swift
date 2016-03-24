@@ -42,24 +42,33 @@ class Task:NSObject,NSCoding{
     }
     
     required convenience init(coder aDecoder: NSCoder) {
-        let name = aDecoder.decodeObjectForKey("name") as! String
-        let date = aDecoder.decodeObjectForKey("date") as? NSDate
-        let importance = ((aDecoder.decodeObjectForKey( "importance" ) as? String) != nil) ? Importance(rawValue: ((aDecoder.decodeObjectForKey( "importance" ) as! String))) :nil
-        let mark = aDecoder.decodeObjectForKey("mark") as! Bool
+        let name = aDecoder.decodeObjectForKey(TaskKey.Name) as! String
+        let date = aDecoder.decodeObjectForKey(TaskKey.Date) as? NSDate
+        let importance = ((aDecoder.decodeObjectForKey(TaskKey.Importance ) as? String) != nil) ? Importance(rawValue: ((aDecoder.decodeObjectForKey( "importance" ) as! String))) :nil
+        let mark = aDecoder.decodeObjectForKey(TaskKey.Mark) as! Bool
         self.init(name: name,date: date,importance: importance,mark:mark)
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.name, forKey: "name")
-        aCoder.encodeObject(self.date, forKey: "date")
-        aCoder.encodeObject((self.importance != nil) ? self.importance!.rawValue: nil, forKey: "importance")
-        aCoder.encodeObject(self.mark, forKey: "mark")
+        aCoder.encodeObject(self.name, forKey: TaskKey.Name)
+        aCoder.encodeObject(self.date, forKey: TaskKey.Date)
+        aCoder.encodeObject((self.importance != nil) ? self.importance!.rawValue: nil, forKey: TaskKey.Importance)
+        aCoder.encodeObject(self.mark, forKey: TaskKey.Mark)
+    }
+    
+    struct TaskKey{
+        static let Name = "name"
+        static let Date = "date"
+        static let Importance = "importance"
+        static let Mark = "mark"
     }
 }
+
 public enum Importance: String{
     case Low = "Low"
     case Normal = "Normal"
     case Hight = "Hight"
+    
     var order: Int{
         switch self{
             case .Low: return 2
@@ -68,13 +77,7 @@ public enum Importance: String{
         }
     }
     static let orderNil:Int = 4
+    
     static let allValue = [Low.rawValue,Normal.rawValue,Hight.rawValue]
 }
 
-
-
-//public struct Importance {
-//    static let Urgently: String = "Urgently"
-//    static let NotNecessary: String = "NotNecessary"
-//    static let Necessary: String = "Necessary"
-//}
