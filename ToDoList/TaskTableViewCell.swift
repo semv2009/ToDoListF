@@ -28,6 +28,7 @@ class TaskTableViewCell: UITableViewCell {
             }
         }
     }
+    
     @IBOutlet weak var nameLabel: UILabel!
     
     @IBOutlet weak var stikerView: UIView!
@@ -40,8 +41,8 @@ class TaskTableViewCell: UITableViewCell {
         mark = (task?.mark)!
         
         let colorStiker:UIColor
-        if task!.importance != nil{
-            switch task!.importance!{
+        if let importance = task!.importance{
+            switch importance{
             case .Low: colorStiker = UIColor.blueColor()
             case .Normal: colorStiker = UIColor.greenColor()
             case .Hight: colorStiker = UIColor.redColor()
@@ -51,19 +52,18 @@ class TaskTableViewCell: UITableViewCell {
         }
         stikerView.backgroundColor = colorStiker
         
-        if task?.date != nil{
+        if let date = task?.date{
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = "hh:mm"
-            let hour = dateFormatter.stringFromDate((task?.date)!)
+            let hour = dateFormatter.stringFromDate(date)
             dateFormatter.dateFormat = "dd MMM"
-            let date = dateFormatter.stringFromDate((task?.date)!)
+            let date = dateFormatter.stringFromDate(date)
             hourLabel.text = hour
             dateLabel.text = date
         }else{
             hourLabel.text = ""
             dateLabel.text = ""
         }
-        
-        
     }
+    
 }

@@ -62,6 +62,7 @@ class Task:NSObject,NSCoding{
         static let Importance = "importance"
         static let Mark = "mark"
     }
+    
 }
 
 public enum Importance: String{

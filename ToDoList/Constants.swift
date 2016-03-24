@@ -9,5 +9,7 @@
 import Foundation
 
 class Constants{
+    
     static let maxDateInt:NSTimeInterval = 999999345345953453999999
+    
 }

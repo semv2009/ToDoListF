@@ -45,7 +45,7 @@ class ManagerTask {
                 index++
             }
             
-            while index < tasks!.count && task.importance?.order ?? Importance.orderNil > tasks![index].importance?.order ?? Importance.orderNil{
+            while index < tasks!.count && task.importance?.order ?? Importance.orderNil > tasks![index].importance?.order ?? Importance.orderNil && task.orderMark == tasks![index].orderMark{
                 index++
             }
             
