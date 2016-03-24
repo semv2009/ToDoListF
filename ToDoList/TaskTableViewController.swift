@@ -61,8 +61,10 @@ class TaskTableViewController: UITableViewController {
         var checkAction = UITableViewRowAction(style: .Normal, title: nameAction) { (action:UITableViewRowAction, indexPath:NSIndexPath) -> Void in
             let cell = tableView.cellForRowAtIndexPath(indexPath) as! TaskTableViewCell
             ManagerTask.sharedInstance().getTask(indexPath.row).mark = !ManagerTask.sharedInstance().getTask(indexPath.row).mark
-            let mark = ManagerTask.sharedInstance().getTask(indexPath.row).mark
-            cell.mark = mark
+            let task = ManagerTask.sharedInstance().getTask(indexPath.row)
+            ManagerTask.sharedInstance().saveTask(task, index: indexPath.row)
+            cell.mark = task.mark
+            tableView.reloadData()
         }
         checkAction.backgroundColor = UIColor.greenColor()
         

@@ -67,6 +67,7 @@ public enum Importance: String{
             case .Hight: return 0
         }
     }
+    static let orderNil:Int = 4
     static let allValue = [Low.rawValue,Normal.rawValue,Hight.rawValue]
 }
 

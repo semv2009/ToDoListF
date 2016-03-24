@@ -46,17 +46,17 @@ class ManagerTask {
                 index++
             }
             
-            while index < tasks!.count && newTask.importance?.order ?? 4 > tasks![index].importance?.order ?? 4{
+            while index < tasks!.count && newTask.importance?.order ?? Importance.orderNil > tasks![index].importance?.order ?? Importance.orderNil{
                 index++
             }
             
-            while index < tasks!.count && newTask.date?.timeIntervalSince1970 ?? 999999345345953453999999 > tasks![index].date?.timeIntervalSince1970 ?? 999999345345953453999999{
+            while index < tasks!.count && newTask.date?.timeIntervalSince1970 ?? 999999345345953453999999 > tasks![index].date?.timeIntervalSince1970 ?? 999999345345953453999999 && newTask.importance?.order ?? Importance.orderNil == tasks![index].importance?.order ?? Importance.orderNil{
                 print(newTask.date?.timeIntervalSince1970)
                 index++
             }
             tasks?.append(newTask)
             var count = tasks!.count - 2
-            while count > index{
+            while count >= index{
                 tasks![count+1] = tasks![count]
                 count--
             }
@@ -65,8 +65,6 @@ class ManagerTask {
         }else{
             tasks?.append(newTask)
         }
-        print("Index = \(index)")
-        
     }
     
     func getTask(index:Int) -> Task{
@@ -84,7 +82,8 @@ class ManagerTask {
     
     func saveTask(task:Task,index:Int){
         tasks?.removeAtIndex(index)
-        tasks?.insert(task, atIndex: index)
+        saveTaskNew(task)
+        //tasks?.insert(task, atIndex: index)
     }
     private struct Store{
         static let tasksKey = "TasksKey"
