@@ -14,11 +14,9 @@ class ManagerTask {
     private let defaults = NSUserDefaults.standardUserDefaults()
     
     private init(){
-        if self.tasks == nil{
-            if let decoded  = defaults.objectForKey(Store.tasksKey) as? NSData{
-                if let loadTasks = NSKeyedUnarchiver.unarchiveObjectWithData(decoded) as? [Task]{
-                    self.tasks = loadTasks
-                }
+        if let _ = self.tasks {} else{
+            if let decoded  = defaults.objectForKey(Store.tasksKey) as? NSData, loadTasks = NSKeyedUnarchiver.unarchiveObjectWithData(decoded) as? [Task]{
+                self.tasks = loadTasks
             }else{
                 self.tasks = [Task]()
             }
@@ -26,7 +24,7 @@ class ManagerTask {
     }
     
     static func sharedInstance() -> ManagerTask{
-        if self.manager == nil{
+        if let manager = self.manager {} else{
             self.manager = ManagerTask()
         }
         return self.manager!
@@ -49,9 +47,10 @@ class ManagerTask {
                 index++
             }
             
-            while index < tasks!.count && task.date?.timeIntervalSince1970 ?? Constants.maxDateInt > tasks![index].date?.timeIntervalSince1970 ?? Constants.maxDateInt && task.importance?.order ?? Importance.orderNil == tasks![index].importance?.order ?? Importance.orderNil{
+            while index < tasks!.count && task.date?.timeIntervalSince1970 ?? Constants.maxDateInt > tasks![index].date?.timeIntervalSince1970 ?? Constants.maxDateInt && task.importance?.order ?? Importance.orderNil == tasks![index].importance?.order ?? Importance.orderNil && task.orderMark > tasks![index].orderMark{
                 index++
             }
+            
             tasks?.append(task)
             var count = tasks!.count - 2
             while count >= index{
@@ -66,12 +65,11 @@ class ManagerTask {
     }
     
     func getTask(index:Int) -> Task{
-        return self.tasks![index]
+        return tasks![index]
     }
     
     func addTask(task:Task){
         saveTask(task)
-        //tasks?.append(task)
     }
     
     func removeTask(index:Int){

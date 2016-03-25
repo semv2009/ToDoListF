@@ -38,7 +38,7 @@ class TaskTableViewCell: UITableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     
     func updateUI(){
-        mark = (task?.mark)!
+        mark = task!.mark
         
         let colorStiker:UIColor
         if let importance = task!.importance{

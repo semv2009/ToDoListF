@@ -11,7 +11,6 @@ import UIKit
 class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPickerViewDelegate{
     
     var task:Task?
-
     let importanceArray = Importance.allValue
     var isEditTask: Bool = false
     
@@ -22,14 +21,13 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPicker
     @IBOutlet weak var markSegmentedControl: UISegmentedControl!
     
     var dataPiker = UIDatePicker()
-    var importancePiker: UIPickerView?
+    var importancePiker = UIPickerView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         doneButton.enabled = false
-        importancePiker = UIPickerView()
-        importancePiker!.delegate = self
-        if task != nil {
+        importancePiker.delegate = self
+        if let _ = task {
             updateUI()
         }
     }
@@ -97,20 +95,20 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPicker
         self.title = "Edit task"
         
         nameTextField.text = task?.name
-        if task?.date != nil{
+        if let date = task?.date{
             let formatter = NSDateFormatter()
             formatter.dateStyle = .FullStyle
-            dateTextField.text = formatter.stringFromDate(task!.date!)
-            dataPiker.date = (task?.date)!
+            dateTextField.text = formatter.stringFromDate(date)
+            dataPiker.date = date
         }
         
-        if task?.importance != nil{
-            importanceTextField.text = task?.importance?.rawValue
+        if let importance = task?.importance{
+            importanceTextField.text = importance.rawValue
         }
         
         doneButton.enabled = true
         isEditTask = true
-        markSegmentedControl.selectedSegmentIndex = task!.mark ? 1 : 0
+        markSegmentedControl.selectedSegmentIndex = task!.orderMark
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {

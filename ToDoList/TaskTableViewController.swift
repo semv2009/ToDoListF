@@ -40,7 +40,6 @@ class TaskTableViewController: UITableViewController {
     
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-         
         return true
     }
 
@@ -65,7 +64,6 @@ class TaskTableViewController: UITableViewController {
             
             alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
-
         }
         deleteAction.backgroundColor = UIColor.redColor()
         
@@ -77,19 +75,16 @@ class TaskTableViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == StoreBoard.EditTaskSegue{
-            if let cell = sender as? TaskTableViewCell{
-                if let cnt = segue.destinationViewController as? CreateNewTaskViewController{
-                    cnt.task = cell.task
-                }
+            if let cell = sender as? TaskTableViewCell, cnt = segue.destinationViewController as? CreateNewTaskViewController{
+                cnt.task = cell.task
             }
         }
     }
     
     @IBAction func unwideTask(segue:UIStoryboardSegue){
-        if let ctc = segue.sourceViewController as? CreateNewTaskViewController{
-            let task = ctc.task!
+        if let ctc = segue.sourceViewController as? CreateNewTaskViewController, task = ctc.task{
             if(ctc.isEditTask){
-                ManagerTask.sharedInstance().saveTask(task, index: (tableView.indexPathForSelectedRow?.row)!)
+                ManagerTask.sharedInstance().saveTask(task, index: tableView.indexPathForSelectedRow!.row)
             }else{
                 ManagerTask.sharedInstance().addTask(task)
             }
