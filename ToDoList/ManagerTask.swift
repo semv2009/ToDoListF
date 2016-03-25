@@ -24,7 +24,7 @@ class ManagerTask {
     }
     
     static func sharedInstance() -> ManagerTask{
-        if let manager = self.manager {} else{
+        if let _ = self.manager {} else{
             self.manager = ManagerTask()
         }
         return self.manager!
@@ -43,11 +43,11 @@ class ManagerTask {
                 index++
             }
             
-            while index < tasks!.count && task.importance?.order ?? Importance.orderNil > tasks![index].importance?.order ?? Importance.orderNil && task.orderMark == tasks![index].orderMark{
+            while index < tasks!.count && task.orderImportance > tasks![index].orderImportance && task.orderMark == tasks![index].orderMark{
                 index++
             }
             
-            while index < tasks!.count && task.date?.timeIntervalSince1970 ?? Constants.maxDateInt > tasks![index].date?.timeIntervalSince1970 ?? Constants.maxDateInt && task.importance?.order ?? Importance.orderNil == tasks![index].importance?.order ?? Importance.orderNil && task.orderMark > tasks![index].orderMark{
+            while index < tasks!.count && task.date?.timeIntervalSince1970 ?? Constants.maxDateInt > tasks![index].date?.timeIntervalSince1970 ?? Constants.maxDateInt && task.orderImportance == tasks![index].orderImportance && task.orderMark == tasks![index].orderMark{
                 index++
             }
             

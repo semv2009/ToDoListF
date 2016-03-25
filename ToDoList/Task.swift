@@ -34,13 +34,24 @@ class Task:NSObject,NSCoding{
         self.mark = mark
     }
     
-    var orderMark:Int{
+    var orderMark: Int{
         switch self.mark{
             case true: return 1
             case false: return 0
         }
     }
     
+    var orderImportance: Int{
+        if let importance = self.importance{
+            switch importance{
+            case .Low: return 2
+            case .Normal: return 1
+            case .Hight: return 0
+            }
+        }else{
+            return 4
+        }
+    }
     required convenience init(coder aDecoder: NSCoder) {
         let name = aDecoder.decodeObjectForKey(TaskKey.Name) as! String
         let date = aDecoder.decodeObjectForKey(TaskKey.Date) as? NSDate
