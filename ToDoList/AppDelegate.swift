@@ -55,6 +55,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let entityDescription = NSEntityDescription.entityForName("Task", inManagedObjectContext: self.managedObjectContext)
         let newTask = NSManagedObject(entity: entityDescription!, insertIntoManagedObjectContext: self.managedObjectContext)
         newTask.setValue("Hello world", forKey: "name")
+        //newTask.setValue(NSDate(), forKey: "date")
+        
+        do{
+            try newTask.managedObjectContext?.save()
+        }catch{
+            print(error)
+        }
+        
+        newTask.setValue("Hello", forKey: "name")
         
         do{
             try newTask.managedObjectContext?.save()
@@ -70,7 +79,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         do {
             let result = try self.managedObjectContext.executeFetchRequest(fetchRequest)
-            print(result)
+            print(result.count)
+            for  i in 0...result.count-1 {
+                let task = result[i] as! NSManagedObject
+                print(i)
+                //print("1 - \(task)")
+                
+                if let name = task.valueForKey("name"){
+                    print("\(name)")
+                }
+            
+            }
             
         } catch {
             let fetchError = error as NSError
