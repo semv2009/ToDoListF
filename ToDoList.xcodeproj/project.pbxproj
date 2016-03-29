@@ -72,8 +72,8 @@
 				8BEC8F391C92C716007A9DF4 /* Main.storyboard */,
 				8BEC8F351C92C716007A9DF4 /* AppDelegate.swift */,
 				8BEC8F3C1C92C716007A9DF4 /* Assets.xcassets */,
-				8BEC8F3E1C92C716007A9DF4 /* LaunchScreen.storyboard */,
 				8BEC8F411C92C716007A9DF4 /* Info.plist */,
+				8BEC8F3E1C92C716007A9DF4 /* LaunchScreen.storyboard */,
 			);
 			path = ToDoList;
 			sourceTree = "<group>";

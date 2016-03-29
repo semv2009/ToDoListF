@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPickerViewDelegate{
+class CreateNewTaskViewController: UIViewController{
     
     var task:Task?
     let importanceArray = Importance.allValue
@@ -72,23 +72,6 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPicker
         doneButton.enabled = (sender.text?.characters.count > 0) ? true : false
     }
     
-    // MARK: - Piker View
-    func numberOfComponentsInPickerView(pickerView: UIPickerView!) -> Int{
-        return 1
-    }
-    
-    func pickerView(pickerView: UIPickerView!, numberOfRowsInComponent component: Int) -> Int{
-        return importanceArray.count
-    }
-    
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?{
-        return importanceArray[row]
-    }
-    
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        importanceTextField.text = importanceArray[row]
-    }
-    
     // MARK: - Helper
     
     func updateUI(){
@@ -119,4 +102,24 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPicker
         self.view.endEditing(true)
     }
 
+}
+
+// MARK: - Piker View
+extension CreateNewTaskViewController: UIPickerViewDelegate{
+    func numberOfComponentsInPickerView(pickerView: UIPickerView!) -> Int{
+        return 1
+    }
+    
+    func pickerView(pickerView: UIPickerView!, numberOfRowsInComponent component: Int) -> Int{
+        return importanceArray.count
+    }
+    
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?{
+        return importanceArray[row]
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        importanceTextField.text = importanceArray[row]
+    }
+    
 }
