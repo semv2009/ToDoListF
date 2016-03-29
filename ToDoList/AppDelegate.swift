@@ -52,6 +52,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        let entityDescription = NSEntityDescription.entityForName("Task", inManagedObjectContext: self.managedObjectContext)
+        let newTask = NSManagedObject(entity: entityDescription!, insertIntoManagedObjectContext: self.managedObjectContext)
+        newTask.setValue("Hello world", forKey: "name")
+        
+        do{
+            try newTask.managedObjectContext?.save()
+        }catch{
+            print(error)
+        }
+        
+        // Initialize Fetch Request
+        let fetchRequest = NSFetchRequest()
+        
+        // Configure Fetch Request
+        fetchRequest.entity = entityDescription
+        
+        do {
+            let result = try self.managedObjectContext.executeFetchRequest(fetchRequest)
+            print(result)
+            
+        } catch {
+            let fetchError = error as NSError
+            print(fetchError)
+        }
+        
         // Override point for customization after application launch.
         return true
     }
