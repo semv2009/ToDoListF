@@ -27,19 +27,23 @@ class CreateNewTaskViewController: UIViewController{
         super.viewDidLoad()
         doneButton.enabled = false
         importancePiker.delegate = self
-        if let _ = task {
+        if let _ = self.task {
             updateUI()
         }
     }
     
     // MARK: Navigator
     
+    private struct StoreBoard{
+        static let BackSegue = "unwideTask"
+    }
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "unwideTask" {
+        if segue.identifier == StoreBoard.BackSegue {
             if nameTextField.text?.characters.count > 0{
                 let name = nameTextField.text
                 let date: NSDate? = (dateTextField.text?.characters.count > 0) ? dataPiker.date : nil
-                let importance: Importance? = (importanceTextField.text?.characters.count > 0) ? Importance(rawValue: importanceTextField.text!) : nil
+                let importance: Importance? = (importanceTextField.text?.characters.count > 0) ? Importance(rawValue: importanceTextField.text ?? "") : nil
                 
                 let selectMarkIndex = markSegmentedControl.selectedSegmentIndex
                 let mark = (selectMarkIndex == 0 ) ? false : true
@@ -76,22 +80,22 @@ class CreateNewTaskViewController: UIViewController{
     
     func updateUI(){
         self.title = "Edit task"
-        
-        nameTextField.text = task?.name
-        if let date = task?.date{
+        guard let task = self.task else { fatalError("Task is nil") }
+        nameTextField.text = task.name
+        if let date = task.date{
             let formatter = NSDateFormatter()
             formatter.dateStyle = .FullStyle
             dateTextField.text = formatter.stringFromDate(date)
             dataPiker.date = date
         }
         
-        if let importance = task?.importance{
+        if let importance = task.importance{
             importanceTextField.text = importance.rawValue
         }
         
         doneButton.enabled = true
         isEditTask = true
-        markSegmentedControl.selectedSegmentIndex = task!.orderMark
+        markSegmentedControl.selectedSegmentIndex = task.orderMark
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {

@@ -52,18 +52,24 @@ class Task:NSObject,NSCoding{
             return 4
         }
     }
+    
     required convenience init(coder aDecoder: NSCoder) {
-        let name = aDecoder.decodeObjectForKey(TaskKey.Name) as! String
+        guard let name = aDecoder.decodeObjectForKey(TaskKey.Name) as? String else { fatalError("Attribute name is nil")}
         let date = aDecoder.decodeObjectForKey(TaskKey.Date) as? NSDate
-        let importance = ((aDecoder.decodeObjectForKey(TaskKey.Importance ) as? String) != nil) ? Importance(rawValue: ((aDecoder.decodeObjectForKey(TaskKey.Importance) as! String))) :nil
-        let mark = aDecoder.decodeObjectForKey(TaskKey.Mark) as! Bool
-        self.init(name: name,date: date,importance: importance,mark:mark)
+        var importance:Importance? = nil
+        if let importanceValue = aDecoder.decodeObjectForKey(TaskKey.Importance ) as? String{
+            importance = Importance(rawValue: (importanceValue))
+        }
+        guard let mark = aDecoder.decodeObjectForKey(TaskKey.Mark) as? Bool else { fatalError("Attribute mark is nil") }
+        self.init(name: name, date: date, importance: importance, mark: mark)
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(self.name, forKey: TaskKey.Name)
         aCoder.encodeObject(self.date, forKey: TaskKey.Date)
-        aCoder.encodeObject((self.importance != nil) ? self.importance!.rawValue: nil, forKey: TaskKey.Importance)
+        if let importance = self.importance {
+             aCoder.encodeObject(importance.rawValue, forKey: TaskKey.Importance)
+        }
         aCoder.encodeObject(self.mark, forKey: TaskKey.Mark)
     }
     
