@@ -7,8 +7,8 @@
 //
 
 import Foundation
-class ManagerTask {
-    static var manager: ManagerTask?
+class TaskManager {
+    static var manager: TaskManager?
     
     var tasks : [Task]?
     private let defaults = NSUserDefaults.standardUserDefaults()
@@ -23,9 +23,13 @@ class ManagerTask {
         }
     }
     
-    static func sharedInstance() -> ManagerTask{
+//    static func sharedInstance() -> TaskManager{
+//        
+//    }
+    
+     static var sharedInstance: TaskManager{
         if let _ = self.manager {} else{
-            self.manager = ManagerTask()
+            self.manager = TaskManager()
         }
         return self.manager!
     }

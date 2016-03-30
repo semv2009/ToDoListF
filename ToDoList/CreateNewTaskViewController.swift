@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPickerViewDelegate{
+class CreateNewTaskViewController: UIViewController{
     
     var task:Task?
     let importanceArray = Importance.allValue
@@ -27,19 +27,23 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPicker
         super.viewDidLoad()
         doneButton.enabled = false
         importancePiker.delegate = self
-        if let _ = task {
+        if let _ = self.task {
             updateUI()
         }
     }
     
     // MARK: Navigator
     
+    private struct StoreBoard{
+        static let BackSegue = "unwideTask"
+    }
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "unwideTask" {
+        if segue.identifier == StoreBoard.BackSegue {
             if nameTextField.text?.characters.count > 0{
                 let name = nameTextField.text
                 let date: NSDate? = (dateTextField.text?.characters.count > 0) ? dataPiker.date : nil
-                let importance: Importance? = (importanceTextField.text?.characters.count > 0) ? Importance(rawValue: importanceTextField.text!) : nil
+                let importance: Importance? = (importanceTextField.text?.characters.count > 0) ? Importance(rawValue: importanceTextField.text ?? "") : nil
                 
                 let selectMarkIndex = markSegmentedControl.selectedSegmentIndex
                 let mark = (selectMarkIndex == 0 ) ? false : true
@@ -72,7 +76,40 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPicker
         doneButton.enabled = (sender.text?.characters.count > 0) ? true : false
     }
     
-    // MARK: - Piker View
+    // MARK: - Helper
+    
+    func updateUI(){
+        self.title = "Edit task"
+        guard let task = self.task else { fatalError("Task is nil") }
+        nameTextField.text = task.name
+        if let date = task.date{
+            let formatter = NSDateFormatter()
+            formatter.dateStyle = .FullStyle
+            dateTextField.text = formatter.stringFromDate(date)
+            dataPiker.date = date
+        }
+        
+        if let importance = task.importance{
+            importanceTextField.text = importance.rawValue
+        }
+        
+        doneButton.enabled = true
+        isEditTask = true
+        markSegmentedControl.selectedSegmentIndex = task.orderMark
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        closeKeyborad()
+    }
+    
+    func closeKeyborad(){
+        self.view.endEditing(true)
+    }
+
+}
+
+// MARK: - Piker View
+extension CreateNewTaskViewController: UIPickerViewDelegate{
     func numberOfComponentsInPickerView(pickerView: UIPickerView!) -> Int{
         return 1
     }
@@ -89,34 +126,4 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPicker
         importanceTextField.text = importanceArray[row]
     }
     
-    // MARK: - Helper
-    
-    func updateUI(){
-        self.title = "Edit task"
-        
-        nameTextField.text = task?.name
-        if let date = task?.date{
-            let formatter = NSDateFormatter()
-            formatter.dateStyle = .FullStyle
-            dateTextField.text = formatter.stringFromDate(date)
-            dataPiker.date = date
-        }
-        
-        if let importance = task?.importance{
-            importanceTextField.text = importance.rawValue
-        }
-        
-        doneButton.enabled = true
-        isEditTask = true
-        markSegmentedControl.selectedSegmentIndex = task!.orderMark
-    }
-    
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        closeKeyborad()
-    }
-    
-    func closeKeyborad(){
-        self.view.endEditing(true)
-    }
-
 }

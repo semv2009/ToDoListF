@@ -28,13 +28,13 @@ class TaskTableViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (ManagerTask.sharedInstance().tasks?.count)!
+        return TaskManager.sharedInstance.tasks?.count ?? 0
     }
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(StoreBoard.TableCellIdentifier, forIndexPath: indexPath) as! TaskTableViewCell
-        cell.task = ManagerTask.sharedInstance().tasks![indexPath.row]
+        guard let cell = tableView.dequeueReusableCellWithIdentifier(StoreBoard.TableCellIdentifier, forIndexPath: indexPath) as? TaskTableViewCell else { fatalError("Can't create cell") }
+        cell.task = TaskManager.sharedInstance.tasks![indexPath.row]
         return cell
     }
     
@@ -44,21 +44,21 @@ class TaskTableViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let nameAction = (ManagerTask.sharedInstance().getTask(indexPath.row).mark) ? "UnResolve" : "Resolve"
-        let checkAction = UITableViewRowAction(style: .Normal, title: nameAction) { (action:UITableViewRowAction, indexPath:NSIndexPath) -> Void in
-            let cell = tableView.cellForRowAtIndexPath(indexPath) as! TaskTableViewCell
-            ManagerTask.sharedInstance().getTask(indexPath.row).mark = !ManagerTask.sharedInstance().getTask(indexPath.row).mark
-            let task = ManagerTask.sharedInstance().getTask(indexPath.row)
-            ManagerTask.sharedInstance().saveTask(task, index: indexPath.row)
-            cell.mark = task.mark
-            tableView.reloadData()
+        let nameAction = (TaskManager.sharedInstance.getTask(indexPath.row).mark) ? "Unmarked" : "Marked"
+        let checkAction = UITableViewRowAction(style: .Normal, title: nameAction) { (action, indexPath) in
+            let task = TaskManager.sharedInstance.getTask(indexPath.row)
+            task.mark = !task.mark
+            TaskManager.sharedInstance.saveTask(task, index: indexPath.row)
+            let range = NSMakeRange(0, self.tableView.numberOfSections)
+            let sections = NSIndexSet(indexesInRange: range)
+            self.tableView.reloadSections(sections, withRowAnimation: .Automatic)
         }
         checkAction.backgroundColor = UIColor.greenColor()
         
-        let deleteAction = UITableViewRowAction(style: .Normal, title: "Delete") { (action:UITableViewRowAction, indexPath:NSIndexPath) -> Void in
+        let deleteAction = UITableViewRowAction(style: .Normal, title: "Delete") {[unowned self] (action, indexPath) in
             let alert = UIAlertController(title: "Warning", message: "Do you want delete task?", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive, handler: { (UIAlertAction) -> Void in
-                ManagerTask.sharedInstance().removeTask(indexPath.row)
+                TaskManager.sharedInstance.removeTask(indexPath.row)
                 tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             }))
             
@@ -84,9 +84,10 @@ class TaskTableViewController: UITableViewController {
     @IBAction func unwideTask(segue:UIStoryboardSegue){
         if let ctc = segue.sourceViewController as? CreateNewTaskViewController, task = ctc.task{
             if(ctc.isEditTask){
-                ManagerTask.sharedInstance().saveTask(task, index: tableView.indexPathForSelectedRow!.row)
+                guard let indexpath = tableView.indexPathForSelectedRow else { fatalError("Cat't get indexPathForSelectedRow") }
+                TaskManager.sharedInstance.saveTask(task, index: indexpath.row)
             }else{
-                ManagerTask.sharedInstance().addTask(task)
+                TaskManager.sharedInstance.addTask(task)
             }
             tableView.reloadData()
         }

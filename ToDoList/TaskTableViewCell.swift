@@ -16,18 +16,6 @@ class TaskTableViewCell: UITableViewCell {
         }
     }
     
-    var mark:Bool = false{
-        didSet{
-            task?.mark = mark
-            if mark {
-                let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: (task?.name)!)
-                attributeString.addAttribute(NSStrikethroughStyleAttributeName, value: 2, range: NSMakeRange(0, attributeString.length))
-                nameLabel.attributedText = attributeString
-            }else{
-                nameLabel.text = task?.name
-            }
-        }
-    }
     
     @IBOutlet weak var nameLabel: UILabel!
     
@@ -38,10 +26,18 @@ class TaskTableViewCell: UITableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     
     func updateUI(){
-        mark = task!.mark
+        guard let task = self.task else{ fatalError("Task is empty") }
+
+        if task.mark {
+            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: task.name)
+            attributeString.addAttribute(NSStrikethroughStyleAttributeName, value: 2, range: NSMakeRange(0, attributeString.length))
+            nameLabel.attributedText = attributeString
+        }else{
+            nameLabel.text = task.name
+        }
         
         let colorStiker:UIColor
-        if let importance = task!.importance{
+        if let importance = task.importance{
             switch importance{
             case .Low: colorStiker = UIColor.blueColor()
             case .Normal: colorStiker = UIColor.greenColor()
@@ -52,7 +48,7 @@ class TaskTableViewCell: UITableViewCell {
         }
         stikerView.backgroundColor = colorStiker
         
-        if let date = task?.date{
+        if let date = task.date{
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = "hh:mm"
             let hour = dateFormatter.stringFromDate(date)
