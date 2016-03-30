@@ -53,41 +53,53 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         let entityDescription = NSEntityDescription.entityForName("Task", inManagedObjectContext: self.managedObjectContext)
-        let newTask = NSManagedObject(entity: entityDescription!, insertIntoManagedObjectContext: self.managedObjectContext)
-        newTask.setValue("Hello world", forKey: "name")
-        //newTask.setValue(NSDate(), forKey: "date")
-        
-        do{
-            try newTask.managedObjectContext?.save()
-        }catch{
-            print(error)
-        }
-        
-        newTask.setValue("Hello", forKey: "name")
-        
-        do{
-            try newTask.managedObjectContext?.save()
-        }catch{
-            print(error)
-        }
-        
+//        let newTask = NSManagedObject(entity: entityDescription!, insertIntoManagedObjectContext: self.managedObjectContext)
+//        newTask.setValue("Hello world", forKey: "name")
+//        //newTask.setValue(NSDate(), forKey: "date")
+       
+        let importanceEntityDescription = NSEntityDescription.entityForName("Importance", inManagedObjectContext: self.managedObjectContext)
+//        let newImportance = NSManagedObject(entity: importanceEntityDescription!, insertIntoManagedObjectContext: self.managedObjectContext)
+//        newImportance.setValue("Low", forKey: "name")
+//        newImportance.setValue(3, forKey: "order")
+//        newImportance.setValue("Blue", forKey: "color")
+//        do {
+//            try newImportance.managedObjectContext?.save()
+//        } catch {
+//            let saveError = error as NSError
+//            print(saveError)
+//        }
+//
+//        let newTask2 = NSManagedObject(entity: entityDescription!, insertIntoManagedObjectContext: self.managedObjectContext)
+//        newTask2.setValue("New task day go", forKey: "name")
+//        newTask2.setValue(NSDate(), forKey: "date")
+//        //newTask2.setValue(NSSet(object: newImportance), forKey: "importances")
+//        
+//        do {
+//            try newTask2.managedObjectContext?.save()
+//        } catch {
+//            let saveError = error as NSError
+//            print(saveError)
+//        }
+
         // Initialize Fetch Request
         let fetchRequest = NSFetchRequest()
         
         // Configure Fetch Request
         fetchRequest.entity = entityDescription
-        
+
         do {
             let result = try self.managedObjectContext.executeFetchRequest(fetchRequest)
             print(result.count)
             for  i in 0...result.count-1 {
                 let task = result[i] as! NSManagedObject
-                print(i)
+                print(task)
+                let importance = task.valueForKey("importances") as! NSManagedObject
+                print(importance.valueForKey("color"))
                 //print("1 - \(task)")
-                
-                if let name = task.valueForKey("name"){
-                    print("\(name)")
-                }
+//                
+//                if let name = task.valueForKey("name"){
+//                    print("\(name)")
+//                }
             
             }
             
@@ -95,6 +107,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let fetchError = error as NSError
             print(fetchError)
         }
+        
+        
+        
         
         // Override point for customization after application launch.
         return true
