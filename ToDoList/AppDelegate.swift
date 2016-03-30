@@ -52,12 +52,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        let entityDescription = NSEntityDescription.entityForName("Task", inManagedObjectContext: self.managedObjectContext)
+//        let entityDescription = NSEntityDescription.entityForName("Task", inManagedObjectContext: self.managedObjectContext)
 //        let newTask = NSManagedObject(entity: entityDescription!, insertIntoManagedObjectContext: self.managedObjectContext)
 //        newTask.setValue("Hello world", forKey: "name")
 //        //newTask.setValue(NSDate(), forKey: "date")
        
-        let importanceEntityDescription = NSEntityDescription.entityForName("Importance", inManagedObjectContext: self.managedObjectContext)
+//        let importanceEntityDescription = NSEntityDescription.entityForName("Importance", inManagedObjectContext: self.managedObjectContext)
 //        let newImportance = NSManagedObject(entity: importanceEntityDescription!, insertIntoManagedObjectContext: self.managedObjectContext)
 //        newImportance.setValue("Low", forKey: "name")
 //        newImportance.setValue(3, forKey: "order")
@@ -82,33 +82,47 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }
 
         // Initialize Fetch Request
-        let fetchRequest = NSFetchRequest()
+//        let fetchRequest = NSFetchRequest()
+//        
+//        // Configure Fetch Request
+//        fetchRequest.entity = entityDescription
+//
+//        do {
+//            let result = try self.managedObjectContext.executeFetchRequest(fetchRequest)
+//            print(result.count)
+//            for  i in 0...result.count-1 {
+//                let task = result[i] as! NSManagedObject
+//                print(task.valueForKey("name"))
+//                let importance = task.valueForKey("importances") as! NSManagedObject
+//                print(importance.valueForKey("color"))
+//                //print("1 - \(task)")
+////                
+////                if let name = task.valueForKey("name"){
+////                    print("\(name)")
+////                }
+//            
+//            }
+//            
+//        } catch {
+//            let fetchError = error as NSError
+//            print(fetchError)
+//        }
         
-        // Configure Fetch Request
-        fetchRequest.entity = entityDescription
-
-        do {
-            let result = try self.managedObjectContext.executeFetchRequest(fetchRequest)
-            print(result.count)
-            for  i in 0...result.count-1 {
-                let task = result[i] as! NSManagedObject
-                print(task)
-                let importance = task.valueForKey("importances") as! NSManagedObject
-                print(importance.valueForKey("color"))
-                //print("1 - \(task)")
-//                
-//                if let name = task.valueForKey("name"){
-//                    print("\(name)")
-//                }
-            
-            }
-            
-        } catch {
-            let fetchError = error as NSError
-            print(fetchError)
+        // Fetch Main Storyboard
+        let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        // Instantiate Root Navigation Controller
+        let rootNavigationController = mainStoryboard.instantiateViewControllerWithIdentifier("StoryboardIDRootNavigationController") as! UINavigationController
+        
+        // Configure View Controller
+        let viewController = rootNavigationController.topViewController as? TaskTableViewController
+        
+        if let viewController = viewController {
+            viewController.managedObjectContext = self.managedObjectContext
         }
         
-        
+        // Configure Window
+        window?.rootViewController = rootNavigationController
         
         
         // Override point for customization after application launch.
@@ -123,6 +137,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(application: UIApplication) {
         print("Save all task")
         TaskManager.sharedInstance.saveTasks()
+        do{
+            try managedObjectContext.save()
+        }catch {
+            let saveError = error as NSError
+            print(saveError)
+        }
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
