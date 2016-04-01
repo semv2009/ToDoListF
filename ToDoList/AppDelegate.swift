@@ -8,157 +8,120 @@
 
 import UIKit
 import CoreData
+import BNRCoreDataStack
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    
-    lazy var applicationDocumentsDirectory: NSURL = {
-        let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-        return urls[urls.count-1]
+    private let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
+    var coreDataStack: CoreDataStack?
+    private lazy var loadingVC: UIViewController = {
+        return self.mainStoryboard.instantiateViewControllerWithIdentifier("LoadingVC")
+    }()
+    private lazy var myCoreDataVC: TaskTableViewController = {
+        return self.mainStoryboard.instantiateViewControllerWithIdentifier("CoreDataVC")
+            as! TaskTableViewController
     }()
     
-    lazy var managedObjectContext: NSManagedObjectContext = {
-        let coordinator = self.persistentStoreCoordinator
-        var managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-        managedObjectContext.persistentStoreCoordinator = coordinator
-        return managedObjectContext
-    }()
-    
-    lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
-        let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-        let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent("SingleViewCoreData.sqlite")
-        var failureReason = "There was an error creating or loading the application's saved data."
-        do {
-            try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
-        } catch {
-            var dict = [String: AnyObject]()
-            dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
-            dict[NSLocalizedFailureReasonErrorKey] = failureReason
-            
-            dict[NSUnderlyingErrorKey] = error as NSError
-            let wrappedError = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
-            NSLog("Unresolved error \(wrappedError), \(wrappedError.userInfo)")
-            abort()
-        }
-        
-        return coordinator
-    }()
-    
-    lazy var managedObjectModel: NSManagedObjectModel = {
-        let modelURL = NSBundle.mainBundle().URLForResource("TaskModel", withExtension: "momd")!
-        return NSManagedObjectModel(contentsOfURL: modelURL)!
-    }()
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-//        let entityDescription = NSEntityDescription.entityForName("Task", inManagedObjectContext: self.managedObjectContext)
-//        let newTask = NSManagedObject(entity: entityDescription!, insertIntoManagedObjectContext: self.managedObjectContext)
-//        newTask.setValue("Hello world", forKey: "name")
-//        //newTask.setValue(NSDate(), forKey: "date")
-       
-//        let importanceEntityDescription = NSEntityDescription.entityForName("Importance", inManagedObjectContext: self.managedObjectContext)
-//        let newImportance = NSManagedObject(entity: importanceEntityDescription!, insertIntoManagedObjectContext: self.managedObjectContext)
-//        newImportance.setValue("Low", forKey: "name")
-//        newImportance.setValue(3, forKey: "order")
-//        newImportance.setValue("Blue", forKey: "color")
-//        do {
-//            try newImportance.managedObjectContext?.save()
-//        } catch {
-//            let saveError = error as NSError
-//            print(saveError)
-//        }
-//
-//        let newTask2 = NSManagedObject(entity: entityDescription!, insertIntoManagedObjectContext: self.managedObjectContext)
-//        newTask2.setValue("New task day go", forKey: "name")
-//        newTask2.setValue(NSDate(), forKey: "date")
-//        //newTask2.setValue(NSSet(object: newImportance), forKey: "importances")
-//        
-//        do {
-//            try newTask2.managedObjectContext?.save()
-//        } catch {
-//            let saveError = error as NSError
-//            print(saveError)
-//        }
+        print("start")
+        window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        window?.rootViewController = loadingVC
+        
+        CoreDataStack.constructSQLiteStack(withModelName: "TaskModel") { result in
+            switch result {
+            case .Success(let stack):
+                self.coreDataStack = stack
+                self.seedInitialData()
+                
+                let delay = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * NSEC_PER_SEC))
+                dispatch_after(delay, dispatch_get_main_queue()) {
+                    self.myCoreDataVC.stack = stack
+                    self.window?.rootViewController = UINavigationController(rootViewController: self.myCoreDataVC)
+                }
 
-        // Initialize Fetch Request
-//        let fetchRequest = NSFetchRequest()
-//        
-//        // Configure Fetch Request
-//        fetchRequest.entity = entityDescription
-//
-//        do {
-//            let result = try self.managedObjectContext.executeFetchRequest(fetchRequest)
-//            print(result.count)
-//            for  i in 0...result.count-1 {
-//                let task = result[i] as! NSManagedObject
-//                print(task.valueForKey("name"))
-//                let importance = task.valueForKey("importances") as! NSManagedObject
-//                print(importance.valueForKey("color"))
-//                //print("1 - \(task)")
-////                
-////                if let name = task.valueForKey("name"){
-////                    print("\(name)")
-////                }
-//            
-//            }
-//            
-//        } catch {
-//            let fetchError = error as NSError
-//            print(fetchError)
-//        }
-        
-        // Fetch Main Storyboard
-        let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        
-        // Instantiate Root Navigation Controller
-        let rootNavigationController = mainStoryboard.instantiateViewControllerWithIdentifier("StoryboardIDRootNavigationController") as! UINavigationController
-        
-        // Configure View Controller
-        let viewController = rootNavigationController.topViewController as? TaskTableViewController
-        
-        if let viewController = viewController {
-            viewController.managedObjectContext = self.managedObjectContext
+
+            case .Failure(let error):
+                assertionFailure("\(error)")
+            }
         }
         
-        // Configure Window
-        window?.rootViewController = rootNavigationController
-        
-        
-        // Override point for customization after application launch.
+        window?.makeKeyAndVisible()
         return true
     }
 
-    func applicationWillResignActive(application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-    }
-
     func applicationDidEnterBackground(application: UIApplication) {
-        print("Save all task")
-        TaskManager.sharedInstance.saveTasks()
-        do{
-            try managedObjectContext.save()
-        }catch {
-            let saveError = error as NSError
-            print(saveError)
+        guard let stack = coreDataStack else {
+            assertionFailure("Stack was not setup first")
+            return
         }
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        do{
+            try stack.mainQueueContext.save()
+        } catch{
+            print(error)
+        }
+        
     }
-
-    func applicationWillEnterForeground(application: UIApplication) {
-        // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
+    private func seedInitialData() {
+        guard let stack = coreDataStack else {
+            assertionFailure("Stack was not setup first")
+            return
+        }
+        let moc = stack.newBackgroundWorkerMOC()
+        do {
+            try moc.performAndWaitOrThrow {
+                try Task.removeAllInContext(moc)
+                var importances = try Importance.allInContext(moc)
+                print(importances)
+                moc.deleteObject(importances[importances.count-1])
+                importances.removeLast()
+                
+                let im3 = Importance(managedObjectContext: moc)
+                im3.name = "Hight"
+                im3.priority = 0
+                im3.color = "1 0 0 0.8"
+                
+                importances.append(im3)
+                
+                for i in 0...importances.count-1{
+                    let task = Task(managedObjectContext: moc)
+                    task.name = "Hello world"
+                    task.date = NSDate()
+                    task.mark = false
+                    task.importances = importances[i]
+                }
+                
+                try moc.saveContextAndWait()
+            }
+        } catch {
+            print("Error creating inital data: \(error)")
+        }
+//
+//        let moc = stack.newBackgroundWorkerMOC()
+//        do {
+//            try moc.performAndWaitOrThrow {
+//                let im1 = Importance(managedObjectContext: moc)
+//                im1.name = "Low"
+//                im1.priority = 2
+//                im1.color = "0 0 1 0.8"
+//                
+//                let im2 = Importance(managedObjectContext: moc)
+//                im2.name = "Normal"
+//                im2.priority = 1
+//                im2.color = "0 1 0 0.8"
+//                
+//                let im3 = Importance(managedObjectContext: moc)
+//                im3.name = "Hight"
+//                im3.priority = 0
+//                im3.color = "0 1 0 0.8"
+//                
+//                try moc.saveContextAndWait()
+//            }
+//        } catch {
+//            print("Error creating inital data: \(error)")
+//        }
     }
-
-    func applicationDidBecomeActive(application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    }
-
-    func applicationWillTerminate(application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    }
-
-
 }
 

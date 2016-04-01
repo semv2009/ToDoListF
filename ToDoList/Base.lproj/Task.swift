@@ -10,15 +10,16 @@ import Foundation
 import CoreData
 import BNRCoreDataStack
 
-import Foundation
+@objc(Task)
 class Task: NSManagedObject, CoreDataModelable{
+
     @NSManaged var date: NSDate?
-    @NSManaged var mark: Bool
-    @NSManaged var name: String
+    @NSManaged var mark: NSNumber?
+    @NSManaged var name: String?
     @NSManaged var importances: Importance?
     
     // MARK: - CoreDataModelable
     
     static let entityName = "Task"
-}
 
+}

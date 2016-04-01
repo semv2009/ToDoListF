@@ -1,5 +1,5 @@
 //
-//  Task.swift
+//  Importance.swift
 //  ToDoList
 //
 //  Created by developer on 01.04.16.
@@ -10,15 +10,12 @@ import Foundation
 import CoreData
 import BNRCoreDataStack
 
-import Foundation
-class Task: NSManagedObject, CoreDataModelable{
-    @NSManaged var date: NSDate?
-    @NSManaged var mark: Bool
+class Importance: NSManagedObject, CoreDataModelable{
+    @NSManaged var color: String
     @NSManaged var name: String
-    @NSManaged var importances: Importance?
+    @NSManaged var priority: NSNumber
     
     // MARK: - CoreDataModelable
     
-    static let entityName = "Task"
+    static let entityName = "Importance"
 }
-

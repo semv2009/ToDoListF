@@ -9,7 +9,7 @@
 import UIKit
 
 class TaskTableViewCell: UITableViewCell {
-
+    
     var task: Task?{
         didSet{
             updateUI()
@@ -36,17 +36,9 @@ class TaskTableViewCell: UITableViewCell {
             nameLabel.text = task.name
         }
         
-        let colorStiker:UIColor
-        if let importance = task.importance{
-            switch importance{
-            case .Low: colorStiker = UIColor.blueColor()
-            case .Normal: colorStiker = UIColor.greenColor()
-            case .Hight: colorStiker = UIColor.redColor()
-            }
-        }else{
-            colorStiker = UIColor.grayColor()
+        if let importance = task.importances{
+            stikerView.backgroundColor = UIColor(CIColor: CIColor(string: importance.color))
         }
-        stikerView.backgroundColor = colorStiker
         
         if let date = task.date{
             let dateFormatter = NSDateFormatter()

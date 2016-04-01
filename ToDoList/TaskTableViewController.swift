@@ -8,39 +8,51 @@
 
 import UIKit
 import CoreData
+import BNRCoreDataStack
 
 class TaskTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
 
-    var managedObjectContext: NSManagedObjectContext!
+    var stack: CoreDataStack!{
+        didSet{
+            print("Stack set")
+        }
+    }
     
-    lazy var fetchedResultsController: NSFetchedResultsController = {
-        // Initialize Fetch Request
-        let fetchRequest = NSFetchRequest(entityName: "Task")
-        
-        // Add Sort Descriptors
-        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        
-        // Initialize Fetched Results Controller
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
-        
-        // Configure Fetched Results Controller
-        fetchedResultsController.delegate = self
-        
-        return fetchedResultsController
+    var str: String?{
+        didSet{
+            print(str)
+        }
+    }
+    private lazy var fetchedResultsController: FetchedResultsController<Task> = {
+        let fetchRequest = NSFetchRequest(entityName: Task.entityName)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "importances.priority", ascending: true)]
+        let frc = FetchedResultsController<Task>(fetchRequest: fetchRequest,
+                                                 managedObjectContext: self.stack.mainQueueContext,
+                                                 sectionNameKeyPath: nil)
+        frc.setDelegate(self.frcDelegate)
+        return frc
     }()
+    private lazy var frcDelegate: TasksFetchedResultsControllerDelegate = {
+        return TasksFetchedResultsControllerDelegate(tableView: self.tableView)
+    }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         do {
             try self.fetchedResultsController.performFetch()
         } catch {
-            let fetchError = error as NSError
-            print("\(fetchError), \(fetchError.userInfo)")
+            print("Failed to fetch objects: \(error)")
         }
     }
     
+    // MARK: - Actions
     
+    @IBAction func showCreateNewTaskController(sender: UIBarButtonItem) {
+        let createVC = CreateNewTaskViewController(coreDataStack: stack)
+        let navController = UINavigationController(rootViewController: createVC)
+        presentViewController(navController, animated: true, completion: nil)
+    }
     // MARK: - Table view data source
     
     private struct StoreBoard{
@@ -50,27 +62,21 @@ class TaskTableViewController: UITableViewController, NSFetchedResultsController
 
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if let sections = fetchedResultsController.sections {
-            return sections.count
-        }
-        
-        return 0
+        print(fetchedResultsController.sections?.count)
+        return fetchedResultsController.sections?.count ?? 0
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let sections = fetchedResultsController.sections {
-            let sectionInfo = sections[section]
-            return sectionInfo.numberOfObjects
-        }
-        
-        return 0
+        print(fetchedResultsController.sections?[section].objects.count)
+       return fetchedResultsController.sections?[section].objects.count ?? 0
     }
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCellWithIdentifier(StoreBoard.TableCellIdentifier, forIndexPath: indexPath) as? TaskTableViewCell else { fatalError("Can't create cell") }
-        // Configure Table View Cell
-        configureCell(cell, atIndexPath: indexPath)
+        if let task = fetchedResultsController.getElementForTableView(indexPath) as? Task{
+            cell.task = task
+        }
         return cell
     }
     
@@ -80,23 +86,21 @@ class TaskTableViewController: UITableViewController, NSFetchedResultsController
     }
 
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let nameAction = (TaskManager.sharedInstance.getTask(indexPath.row).mark) ? "Unmarked" : "Marked"
-        let checkAction = UITableViewRowAction(style: .Normal, title: nameAction) { (action, indexPath) in
-            let task = TaskManager.sharedInstance.getTask(indexPath.row)
+        guard let task = fetchedResultsController.getElementForTableView(indexPath) as? Task else { fatalError("Don't get task from fetchedResultsController") }
+        let nameAction = (task.mark) ? "Unmarked" : "Marked"
+        
+        let checkAction = UITableViewRowAction(style: .Normal, title: nameAction) { [unowned self](action, indexPath) in
+            guard let task = self.fetchedResultsController.getElementForTableView(indexPath) as? Task  else { fatalError("Don't get task from fetchedResultsController") }
             task.mark = !task.mark
-            TaskManager.sharedInstance.saveTask(task, index: indexPath.row)
-            let range = NSMakeRange(0, self.tableView.numberOfSections)
-            let sections = NSIndexSet(indexesInRange: range)
-            self.tableView.reloadSections(sections, withRowAnimation: .Automatic)
         }
         checkAction.backgroundColor = UIColor.greenColor()
         
         let deleteAction = UITableViewRowAction(style: .Normal, title: "Delete") {[unowned self] (action, indexPath) in
             let alert = UIAlertController(title: "Warning", message: "Do you want delete task?", preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive, handler: { (UIAlertAction) -> Void in
-                self.managedObjectContext.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
-                //TaskManager.sharedInstance.removeTask(indexPath.row)
-                //tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            alert.addAction(UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive,
+                handler: { (UIAlertAction) -> Void in
+                guard let task = self.fetchedResultsController.getElementForTableView(indexPath) as? Task else { fatalError("Don't get task from fetchedResultsController") }
+                self.stack.mainQueueContext.deleteObject(task)
             }))
             
             alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: nil))
@@ -113,71 +117,88 @@ class TaskTableViewController: UITableViewController, NSFetchedResultsController
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == StoreBoard.EditTaskSegue{
             if let cell = sender as? TaskTableViewCell, cnt = segue.destinationViewController as? CreateNewTaskViewController{
-                cnt.task = cell.task
+               // cnt.task = cell.task
             }
         }
     }
     
     @IBAction func unwideTask(segue:UIStoryboardSegue){
-        if let ctc = segue.sourceViewController as? CreateNewTaskViewController, task = ctc.task{
-            if(ctc.isEditTask){
-                guard let indexpPath = tableView.indexPathForSelectedRow else { fatalError("Cat't get indexPathForSelectedRow") }
-                TaskManager.sharedInstance.saveTask(task, index: indexpPath.row)
-            }else{
-                TaskManager.sharedInstance.addTask(task)
-            }
-            tableView.reloadData()
-        }
+//        if let ctc = segue.sourceViewController as? CreateNewTaskViewController, task = ctc.task{
+//            if(ctc.isEditTask){
+//                guard let indexpPath = tableView.indexPathForSelectedRow else { fatalError("Cat't get indexPathForSelectedRow") }
+//                TaskManager.sharedInstance.saveTask(task, index: indexpPath.row)
+//            }else{
+//                TaskManager.sharedInstance.addTask(task)
+//            }
+//            tableView.reloadData()
+       // }
     }
     
-    // MARK: Fetched Results Controller Delegate Methods
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        tableView.beginUpdates()
+//    func configureCell(cell: TaskTableViewCell, atIndexPath indexPath: NSIndexPath) {
+//        // Fetch Record
+//        let record = fetchedResultsController.objectAtIndexPath(indexPath)
+//        
+//        // Update Cell
+//        if let name = record.valueForKey("name") as? String {
+//            cell.nameLabel.text = name
+//        }
+//    }
+
+
+}
+extension FetchedResultsController{
+    func getElementForTableView(indexPath: NSIndexPath) -> NSManagedObject{
+        guard let sections = self.sections else { fatalError("Don't get sessions from fetchedResultsController") }
+        return sections[indexPath.section].objects[indexPath.row]
+    }
+}
+class TasksFetchedResultsControllerDelegate: FetchedResultsControllerDelegate {
+    
+    private weak var tableView: UITableView?
+    
+    // MARK: - Lifecycle
+    
+    init(tableView: UITableView) {
+        self.tableView = tableView
     }
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        tableView.endUpdates()
+    func fetchedResultsControllerDidPerformFetch(controller: FetchedResultsController<Task>) {
+        tableView?.reloadData()
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
-        switch (type) {
-        case .Insert:
-            if let indexPath = newIndexPath {
-                tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            }
-            break;
-        case .Delete:
-            if let indexPath = indexPath {
-                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            }
-            break;
-        case .Update:
-            if let indexPath = indexPath {
-                let cell = tableView.cellForRowAtIndexPath(indexPath) as! TaskTableViewCell
-                configureCell(cell, atIndexPath: indexPath)
-            }
-            break;
-        case .Move:
-            if let indexPath = indexPath {
-                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            }
+    func fetchedResultsControllerWillChangeContent(controller: FetchedResultsController<Task>) {
+        tableView?.beginUpdates()
+    }
+    
+    func fetchedResultsControllerDidChangeContent(controller: FetchedResultsController<Task>) {
+        tableView?.endUpdates()
+    }
+    
+    func fetchedResultsController(controller: FetchedResultsController<Task>,
+                                  didChangeObject change: FetchedResultsObjectChange<Task>) {
+        switch change {
+        case let .Insert(_, indexPath):
+            tableView?.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             
-            if let newIndexPath = newIndexPath {
-                tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Fade)
-            }
-            break;
+        case let .Delete(_, indexPath):
+            tableView?.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            
+        case let .Move(_, fromIndexPath, toIndexPath):
+            tableView?.moveRowAtIndexPath(fromIndexPath, toIndexPath: toIndexPath)
+            
+        case let .Update(_, indexPath):
+            tableView?.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
         }
     }
     
-    func configureCell(cell: TaskTableViewCell, atIndexPath indexPath: NSIndexPath) {
-        // Fetch Record
-        let record = fetchedResultsController.objectAtIndexPath(indexPath)
-        
-        // Update Cell
-        if let name = record.valueForKey("name") as? String {
-            cell.nameLabel.text = name
+    func fetchedResultsController(controller: FetchedResultsController<Task>,
+                                  didChangeSection change: FetchedResultsSectionChange<Task>) {
+        switch change {
+        case let .Insert(_, index):
+            tableView?.insertSections(NSIndexSet(index: index), withRowAnimation: .Automatic)
+            
+        case let .Delete(_, index):
+            tableView?.deleteSections(NSIndexSet(index: index), withRowAnimation: .Automatic)
         }
     }
-
-
 }
