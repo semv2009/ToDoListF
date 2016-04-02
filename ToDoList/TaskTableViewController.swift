@@ -49,9 +49,9 @@ class TaskTableViewController: UITableViewController, NSFetchedResultsController
     // MARK: - Actions
     
     @IBAction func showCreateNewTaskController(sender: UIBarButtonItem) {
+         let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let createVC = CreateNewTaskViewController(coreDataStack: stack)
-        let navController = UINavigationController(rootViewController: createVC)
-        presentViewController(navController, animated: true, completion: nil)
+        showViewController( UINavigationController(rootViewController: createVC), sender: self)
     }
     // MARK: - Table view data source
     
