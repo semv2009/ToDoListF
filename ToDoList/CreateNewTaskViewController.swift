@@ -32,6 +32,7 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPicker
     var importancePiker = UIPickerView()
     
     var importanceArray: [Importance]?
+    var importanceArrays =  ["sd","dsds","cfffd"]
     
     
     init(coreDataStack stack: CoreDataStack) {
@@ -167,18 +168,18 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate,UIPicker
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int{
         guard let importanceArray = importanceArray else { fatalError("Don't have mportance") }
         print(importanceArray.count)
-        return importanceArray.count
+        return importanceArrays.count
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?{
         guard let importanceArray = importanceArray else { fatalError("Don't have mportance") }
         print("Row = \(row)")
-        return importanceArray[row].color ?? "Hello"
+        return importanceArrays[row]
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         guard let importanceArray = importanceArray else { fatalError("Don't have mportance") }
-        importanceTextField.text = importanceArray[row].name
+        importanceTextField.text = importanceArrays[row]
     }
 
 //
