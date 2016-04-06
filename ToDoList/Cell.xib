@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TaskTableViewCell" customModule="ToDoList" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="gray" showsReorderControl="YES" indentationWidth="16" rowHeight="83" id="Y7Q-7c-ePF">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="83"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Y7Q-7c-ePF" id="u2L-eR-Sx3">
+                <rect key="frame" x="0.0" y="0.0" width="600" height="82"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BDu-oM-sWO">
+                        <rect key="frame" x="8" y="20" width="55" height="55"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="57a-Oa-Y1v">
+                                <rect key="frame" x="6" y="8" width="42" height="15"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uz2-8Z-fxf">
+                                <rect key="frame" x="6" y="20" width="42" height="27"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="57a-Oa-Y1v" secondAttribute="trailing" constant="7" id="EEE-vk-4dJ"/>
+                            <constraint firstItem="Uz2-8Z-fxf" firstAttribute="top" secondItem="57a-Oa-Y1v" secondAttribute="bottom" constant="-3" id="Gsf-hD-YrX"/>
+                            <constraint firstItem="Uz2-8Z-fxf" firstAttribute="leading" secondItem="BDu-oM-sWO" secondAttribute="leading" constant="6" id="RpZ-qb-NLm"/>
+                            <constraint firstItem="57a-Oa-Y1v" firstAttribute="top" secondItem="BDu-oM-sWO" secondAttribute="top" constant="8" id="d77-Vz-kax"/>
+                            <constraint firstAttribute="trailing" secondItem="Uz2-8Z-fxf" secondAttribute="trailing" constant="7" id="dn9-Xe-fe7"/>
+                            <constraint firstAttribute="width" constant="55" id="hRS-Ul-Ro1"/>
+                            <constraint firstAttribute="height" constant="55" id="mc9-aC-Om4"/>
+                            <constraint firstAttribute="bottom" secondItem="Uz2-8Z-fxf" secondAttribute="bottom" constant="8" id="ryy-Mg-wX6"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n2h-yH-NAO">
+                        <rect key="frame" x="71" y="20" width="521" height="52"/>
+                        <gestureRecognizers/>
+                        <string key="text">На праймериз в Юте сенатор США от штата Техас, кандидат в президенты от Республиканской партии Тед Круз одержал победу над миллиардером Дональдом Трампом. Об этом в среду, 23 марта, </string>
+                        <fontDescription key="fontDescription" type="italicSystem" pointSize="16"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="BDu-oM-sWO" firstAttribute="top" secondItem="u2L-eR-Sx3" secondAttribute="topMargin" constant="12" id="CnE-qa-H1a"/>
+                    <constraint firstAttribute="leadingMargin" secondItem="BDu-oM-sWO" secondAttribute="leading" id="H2s-jB-2Rc"/>
+                    <constraint firstItem="n2h-yH-NAO" firstAttribute="leading" secondItem="BDu-oM-sWO" secondAttribute="trailing" constant="8" id="LVL-Vb-rsv"/>
+                    <constraint firstItem="57a-Oa-Y1v" firstAttribute="leading" secondItem="u2L-eR-Sx3" secondAttribute="leadingMargin" constant="6" id="Vgd-5z-Qu9"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="n2h-yH-NAO" secondAttribute="bottom" constant="2" id="ZvD-v2-iSk"/>
+                    <constraint firstItem="n2h-yH-NAO" firstAttribute="top" secondItem="u2L-eR-Sx3" secondAttribute="topMargin" constant="12" id="do7-e7-nPd"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="n2h-yH-NAO" secondAttribute="trailing" id="eMl-Pl-XDd"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="BDu-oM-sWO" secondAttribute="bottom" constant="12" id="nvW-fB-aQQ"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="n2h-yH-NAO" secondAttribute="trailing" id="ufP-AD-EmX"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="BDu-oM-sWO" secondAttribute="bottom" constant="2" id="wyc-FO-bZf"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="nvW-fB-aQQ"/>
+                        <exclude reference="wyc-FO-bZf"/>
+                    </mask>
+                </variation>
+            </tableViewCellContentView>
+            <color key="backgroundColor" red="0.91956939859999998" green="0.92823543850000001" blue="0.92097135549999998" alpha="1" colorSpace="calibratedRGB"/>
+            <point key="canvasLocation" x="364" y="-120.5"/>
+        </tableViewCell>
+    </objects>
+</document>

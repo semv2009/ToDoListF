@@ -1,0 +1,62 @@
+//
+//  TableViewCell.swift
+//  ToDoList
+//
+//  Created by developer on 06.04.16.
+//  Copyright © 2016 developer. All rights reserved.
+//
+
+import UIKit
+
+class TableViewCell: UITableViewCell {
+
+    @IBOutlet weak var nameLabel: UILabel!
+    
+    @IBOutlet weak var stikerView: UIView!
+    
+    @IBOutlet weak var hourLabel: UILabel!
+    
+    @IBOutlet weak var dateLabel: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+
+    override func setSelected(selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
+    }
+    
+    func updateUI(task: Task){
+        //        guard let task = task else{ fatalError("Task is empty") }
+        
+        if task.mark {
+         let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: task.name)
+         attributeString.addAttribute(NSStrikethroughStyleAttributeName, value: 2, range: NSMakeRange(0, attributeString.length))
+         nameLabel.attributedText = attributeString
+         }else{
+         print("task name = " + task.name)
+            nameLabel.text = task.name
+         }
+         
+         if let importance = task.importances{
+         stikerView.backgroundColor = UIColor(CIColor: CIColor(string: importance.color))
+         }
+         
+         if let date = task.date{
+         let dateFormatter = NSDateFormatter()
+         dateFormatter.dateFormat = "hh:mm"
+         let hour = dateFormatter.stringFromDate(date)
+         dateFormatter.dateFormat = "dd MMM"
+         let date = dateFormatter.stringFromDate(date)
+         hourLabel.text = hour
+         dateLabel.text = date
+         }else{
+         print("Bad date")
+         hourLabel.text = ""
+         dateLabel.text = ""
+         }
+    }
+}

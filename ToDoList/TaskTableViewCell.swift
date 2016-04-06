@@ -10,29 +10,25 @@ import UIKit
 
 class TaskTableViewCell: UITableViewCell {
     
-    var task: Task?{
-        didSet{
-            updateUI()
-        }
-    }
+    var task: Task?
     
     
+  
     @IBOutlet weak var nameLabel: UILabel!
-    
     @IBOutlet weak var stikerView: UIView!
-    
     @IBOutlet weak var hourLabel: UILabel!
-    
     @IBOutlet weak var dateLabel: UILabel!
     
-    func updateUI(){
-        guard let task = self.task else{ fatalError("Task is empty") }
-
-        if task.mark {
+    
+    func updateUI(task: Task){
+//        guard let task = task else{ fatalError("Task is empty") }
+        
+        /*if task.mark {
             let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: task.name)
             attributeString.addAttribute(NSStrikethroughStyleAttributeName, value: 2, range: NSMakeRange(0, attributeString.length))
             nameLabel.attributedText = attributeString
         }else{
+            print("task name = " + task.name)
             nameLabel.text = task.name
         }
         
@@ -52,7 +48,7 @@ class TaskTableViewCell: UITableViewCell {
             print("Bad date")
             hourLabel.text = ""
             dateLabel.text = ""
-        }
+        }*/
     }
-    
+
 }
