@@ -49,6 +49,7 @@ class TaskTableViewCell: UITableViewCell {
             hourLabel.text = hour
             dateLabel.text = date
         }else{
+            print("Bad date")
             hourLabel.text = ""
             dateLabel.text = ""
         }

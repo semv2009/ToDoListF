@@ -10,28 +10,23 @@ import UIKit
 import CoreData
 import BNRCoreDataStack
 
-class TaskTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
+class TaskTableViewController: UITableViewController{
 
-    var stack: CoreDataStack!{
-        didSet{
-            print("Stack set")
-        }
-    }
+    var stack: CoreDataStack!
     
-    var str: String?{
-        didSet{
-            print(str)
-        }
-    }
     private lazy var fetchedResultsController: FetchedResultsController<Task> = {
         let fetchRequest = NSFetchRequest(entityName: Task.entityName)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "importances.priority", ascending: true)]
+        let solvedSortDescriptor = NSSortDescriptor(key: "mark", ascending: true)
+        let prioritySortDescriptor = NSSortDescriptor(key: "importances.priority", ascending: true)
+        let dateSortDescriptor = NSSortDescriptor(key: "date", ascending: true)
+        fetchRequest.sortDescriptors = [solvedSortDescriptor, prioritySortDescriptor, dateSortDescriptor]
         let frc = FetchedResultsController<Task>(fetchRequest: fetchRequest,
                                                  managedObjectContext: self.stack.mainQueueContext,
                                                  sectionNameKeyPath: nil)
         frc.setDelegate(self.frcDelegate)
         return frc
     }()
+    
     private lazy var frcDelegate: TasksFetchedResultsControllerDelegate = {
         return TasksFetchedResultsControllerDelegate(tableView: self.tableView)
     }()
@@ -46,13 +41,18 @@ class TaskTableViewController: UITableViewController, NSFetchedResultsController
         }
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+    
     // MARK: - Actions
     
     @IBAction func showCreateNewTaskController(sender: UIBarButtonItem) {
-         let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let createVC = CreateNewTaskViewController(coreDataStack: stack)
         showViewController( UINavigationController(rootViewController: createVC), sender: self)
     }
+    
     // MARK: - Table view data source
     
     private struct StoreBoard{
@@ -62,12 +62,10 @@ class TaskTableViewController: UITableViewController, NSFetchedResultsController
 
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        print(fetchedResultsController.sections?.count)
         return fetchedResultsController.sections?.count ?? 0
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(fetchedResultsController.sections?[section].objects.count)
        return fetchedResultsController.sections?[section].objects.count ?? 0
     }
 
@@ -80,6 +78,12 @@ class TaskTableViewController: UITableViewController, NSFetchedResultsController
         return cell
     }
     
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let createVC = CreateNewTaskViewController(coreDataStack: stack)
+        let task = fetchedResultsController.getElementForTableView(indexPath) as? Task
+        createVC.task = task
+        showViewController( UINavigationController(rootViewController: createVC), sender: self)
+    }
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
@@ -92,6 +96,7 @@ class TaskTableViewController: UITableViewController, NSFetchedResultsController
         let checkAction = UITableViewRowAction(style: .Normal, title: nameAction) { [unowned self](action, indexPath) in
             guard let task = self.fetchedResultsController.getElementForTableView(indexPath) as? Task  else { fatalError("Don't get task from fetchedResultsController") }
             task.mark = !task.mark
+            self.tableView?.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
         }
         checkAction.backgroundColor = UIColor.greenColor()
         
@@ -110,53 +115,20 @@ class TaskTableViewController: UITableViewController, NSFetchedResultsController
         
         return [deleteAction,checkAction]
     }
-    
-
-    // MARK: - Navigation
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == StoreBoard.EditTaskSegue{
-            if let cell = sender as? TaskTableViewCell, cnt = segue.destinationViewController as? CreateNewTaskViewController{
-               // cnt.task = cell.task
-            }
-        }
-    }
-    
-    @IBAction func unwideTask(segue:UIStoryboardSegue){
-//        if let ctc = segue.sourceViewController as? CreateNewTaskViewController, task = ctc.task{
-//            if(ctc.isEditTask){
-//                guard let indexpPath = tableView.indexPathForSelectedRow else { fatalError("Cat't get indexPathForSelectedRow") }
-//                TaskManager.sharedInstance.saveTask(task, index: indexpPath.row)
-//            }else{
-//                TaskManager.sharedInstance.addTask(task)
-//            }
-//            tableView.reloadData()
-       // }
-    }
-    
-//    func configureCell(cell: TaskTableViewCell, atIndexPath indexPath: NSIndexPath) {
-//        // Fetch Record
-//        let record = fetchedResultsController.objectAtIndexPath(indexPath)
-//        
-//        // Update Cell
-//        if let name = record.valueForKey("name") as? String {
-//            cell.nameLabel.text = name
-//        }
-//    }
-
-
 }
+
 extension FetchedResultsController{
     func getElementForTableView(indexPath: NSIndexPath) -> NSManagedObject{
         guard let sections = self.sections else { fatalError("Don't get sessions from fetchedResultsController") }
         return sections[indexPath.section].objects[indexPath.row]
     }
 }
+
 class TasksFetchedResultsControllerDelegate: FetchedResultsControllerDelegate {
     
     private weak var tableView: UITableView?
     
-    // MARK: - Lifecycle
+    // MARK: - Lifecycle FetchedResultsController
     
     init(tableView: UITableView) {
         self.tableView = tableView
