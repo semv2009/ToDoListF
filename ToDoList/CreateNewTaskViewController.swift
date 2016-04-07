@@ -9,7 +9,7 @@
 import UIKit
 import BNRCoreDataStack
 
-class CreateNewTaskViewController: UIViewController,UITextFieldDelegate{
+class CreateNewTaskViewController: UIViewController{
     var stack: CoreDataStack!
 
     var task:Task?
@@ -35,7 +35,6 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate{
     required init?(coder aDecoder: NSCoder) {
         preconditionFailure("init(coder:) has not been implemented")
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,6 +74,7 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate{
     @objc private func dismiss() {
         dismissViewControllerAnimated(true, completion: nil)
     }
+    
     @objc private func done() {
         guard let importanceArray = importanceArray else { fatalError("Don't have importance") }
         let moc = stack.mainQueueContext
@@ -82,7 +82,8 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate{
             self.task = Task(managedObjectContext: moc)
         }
         
-        self.task?.name = nameTextField.text!
+        guard let text = nameTextField.text else { fatalError("Don't have text") }
+        self.task?.name = text
         self.task?.date = datePiсker.date
         self.task?.importances = importanceArray[importancePiсker.selectedRowInComponent(0)]
         self.task?.mark = markSegmentedControl.selectedSegmentIndex == 0 ? false : true
@@ -90,38 +91,7 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate{
         dismissViewControllerAnimated(true, completion: nil)
     }
     
-    // MARK: - TextFiend Delegate
- 
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        switch textField {
-        case nameTextField:
-            dateTextField.becomeFirstResponder()
-        default:
-            break
-        }
-        return true
-    }
-    func textFieldDidBeginEditing(textField: UITextField) {
-        switch textField{
-            case dateTextField:
-                textField.inputView = datePiсker
-                datePiсker.addTarget(self, action: #selector(CreateNewTaskViewController.datePikerChanged(_:)), forControlEvents: .ValueChanged)
-            case importanceTextField: textField.inputView = importancePiсker
-            case nameTextField: textField.addTarget(self, action: #selector(CreateNewTaskViewController.nameTextChanged(_:)), forControlEvents: .EditingChanged)
-            default: break
-        }
-    }
-
-    func datePikerChanged(sender:UIDatePicker){
-        dateTextField.text = sender.date.getDateForTextField()
-    }
-
-    func nameTextChanged(sender:UITextField){
-        doneButton.enabled = (sender.text?.characters.count > 0) ? true : false
-    }
-    
-
-    // MARK: - Helper
+    // MARK: - UIHelper
     
     func updateUI(){
         if let task = self.task {
@@ -132,14 +102,15 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate{
                 datePiсker.date = date
             }
             
-            if let importances = task.importances, let importanceArray = importanceArray {
-                let indexImportance  = importanceArray.count - 1 - importances.priority.integerValue
-                importanceTextField.text = importanceArray[indexImportance].name
+            if let importances = task.importances, let importanceNames = importanceNames {
+                let indexImportance  = importanceNames.count - 1 - importances.priority.integerValue
+                importanceTextField.text = importanceNames[indexImportance]
                 importancePiсker.selectRow(indexImportance, inComponent: 0, animated: false)
             }
             
             doneButton.enabled = true
             markSegmentedControl.selectedSegmentIndex = task.mark ? 1 : 0
+            nameTextField.becomeFirstResponder()
         }else{
             self.title = "Create task"
             datePiсker.date = NSDate()
@@ -158,6 +129,38 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate{
     
     func closeKeyborad(){
         self.view.endEditing(true)
+    }
+}
+
+// MARK: - TextField Delegate
+
+extension CreateNewTaskViewController: UITextFieldDelegate{
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        switch textField {
+        case nameTextField:
+            dateTextField.becomeFirstResponder()
+        default:
+            break
+        }
+        return true
+    }
+    func textFieldDidBeginEditing(textField: UITextField) {
+        switch textField{
+        case dateTextField:
+            textField.inputView = datePiсker
+            datePiсker.addTarget(self, action: #selector(CreateNewTaskViewController.datePikerChanged(_:)), forControlEvents: .ValueChanged)
+        case importanceTextField: textField.inputView = importancePiсker
+        case nameTextField: textField.addTarget(self, action: #selector(CreateNewTaskViewController.nameTextChanged(_:)), forControlEvents: .EditingChanged)
+        default: break
+        }
+    }
+    
+    func datePikerChanged(sender:UIDatePicker){
+        dateTextField.text = sender.date.getDateForTextField()
+    }
+    
+    func nameTextChanged(sender:UITextField){
+        doneButton.enabled = (sender.text?.characters.count > 0) ? true : false
     }
 }
 
@@ -183,6 +186,9 @@ extension CreateNewTaskViewController: UIPickerViewDelegate{
         importanceTextField.text = importanceNames[row]
     }
 }
+
+// MARK: - NSDate Extension
+
 extension NSDate{
     func getDateForTextField() -> String{
         let formatter = NSDateFormatter()

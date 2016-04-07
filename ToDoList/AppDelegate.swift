@@ -62,20 +62,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try moc.performAndWaitOrThrow {
                 let importances = try Importance.allInContext(moc)
                 if importances.count == 0 {
-                    let im1 = Importance(managedObjectContext: moc)
-                    im1.name = "Low"
-                    im1.priority = 2
-                    im1.color = "0 0 1 0.8"
+                    let lowImportance = Importance(managedObjectContext: moc)
+                    lowImportance.name = "Low"
+                    lowImportance.priority = 2
+                    lowImportance.color = "0 0 1 0.8"
                     
-                    let im2 = Importance(managedObjectContext: moc)
-                    im2.name = "Normal"
-                    im2.priority = 1
-                    im2.color = "0 1 0 0.8"
+                    let normalImportance = Importance(managedObjectContext: moc)
+                    normalImportance.name = "Normal"
+                    normalImportance.priority = 1
+                    normalImportance.color = "0 1 0 0.8"
                     
-                    let im3 = Importance(managedObjectContext: moc)
-                    im3.name = "Hight"
-                    im3.priority = 0
-                    im3.color = "1 0 0 0.8"
+                    let hightlImportance = Importance(managedObjectContext: moc)
+                    hightlImportance.name = "Hight"
+                    hightlImportance.priority = 0
+                    hightlImportance.color = "1 0 0 0.8"
                     
                     try moc.saveContextAndWait()
                 }

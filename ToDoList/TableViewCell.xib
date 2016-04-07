@@ -82,7 +82,7 @@
                 <outlet property="nameLabel" destination="kwB-61-7PA" id="o5J-Z7-x98"/>
                 <outlet property="stikerView" destination="BLP-5D-yZK" id="uQF-QI-cq1"/>
             </connections>
-            <point key="canvasLocation" x="336" y="250.5"/>
+            <point key="canvasLocation" x="525" y="189.5"/>
         </tableViewCell>
     </objects>
 </document>

@@ -20,9 +20,7 @@ class TaskTableViewController: UITableViewController{
         let prioritySortDescriptor = NSSortDescriptor(key: "importances.priority", ascending: true)
         let dateSortDescriptor = NSSortDescriptor(key: "date", ascending: true)
         fetchRequest.sortDescriptors = [solvedSortDescriptor, prioritySortDescriptor, dateSortDescriptor]
-        let frc = FetchedResultsController<Task>(fetchRequest: fetchRequest,
-                                                 managedObjectContext: self.stack.mainQueueContext,
-                                                 sectionNameKeyPath: nil)
+        let frc = FetchedResultsController<Task>(fetchRequest: fetchRequest, managedObjectContext: self.stack.mainQueueContext, sectionNameKeyPath: nil)
         frc.setDelegate(self.frcDelegate)
         return frc
     }()
@@ -61,7 +59,7 @@ class TaskTableViewController: UITableViewController{
     
     func showCreateNewTaskController(sender: UIBarButtonItem) {
         let createVC = CreateNewTaskViewController(coreDataStack: stack)
-        showViewController( UINavigationController(rootViewController: createVC), sender: self)
+        showViewController(UINavigationController(rootViewController: createVC), sender: self)
     }
     
     // MARK: - Table view data source
@@ -76,7 +74,6 @@ class TaskTableViewController: UITableViewController{
     
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         guard let cell =  cell as? TableViewCell else { fatalError("Cell is not registered") }
-        
         if let task = fetchedResultsController.getElementForTableView(indexPath) as? Task{
             cell.updateUI(task)
         }
@@ -85,14 +82,14 @@ class TaskTableViewController: UITableViewController{
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         guard let cell = (tableView.dequeueReusableCellWithIdentifier("myCell", forIndexPath: indexPath)) as? TableViewCell
             else { fatalError("Cell is not registered") }
-        
         return cell
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let createVC = CreateNewTaskViewController(coreDataStack: stack)
-        let task = fetchedResultsController.getElementForTableView(indexPath) as? Task
-        createVC.task = task
+        if let task = fetchedResultsController.getElementForTableView(indexPath) as? Task{
+            createVC.task = task
+        }
         showViewController(UINavigationController(rootViewController: createVC), sender: self)
     }
     
@@ -104,18 +101,16 @@ class TaskTableViewController: UITableViewController{
         guard let task = fetchedResultsController.getElementForTableView(indexPath) as? Task else { fatalError("Don't get task from fetchedResultsController") }
         let nameAction = (task.mark) ? "Unmarked" : "Marked"
         
-        let checkAction = UITableViewRowAction(style: .Normal, title: nameAction) { [unowned self](action, indexPath) in
-            guard let task = self.fetchedResultsController.getElementForTableView(indexPath) as? Task  else { fatalError("Don't get task from fetchedResultsController") }
+        let checkAction = UITableViewRowAction(style: .Normal, title: nameAction) { [unowned self, task](action, indexPath) in
             task.mark = !task.mark
             self.tableView?.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
         }
         checkAction.backgroundColor = UIColor.greenColor()
         
-        let deleteAction = UITableViewRowAction(style: .Normal, title: "Delete") {[unowned self] (action, indexPath) in
+        let deleteAction = UITableViewRowAction(style: .Normal, title: "Delete") {[unowned self,task] (action, indexPath) in
             let alert = UIAlertController(title: "Warning", message: "Do you want delete task?", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive,
                 handler: { (UIAlertAction) -> Void in
-                guard let task = self.fetchedResultsController.getElementForTableView(indexPath) as? Task else { fatalError("Don't get task from fetchedResultsController") }
                 self.stack.mainQueueContext.deleteObject(task)
             }))
             

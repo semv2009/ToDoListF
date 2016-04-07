@@ -33,6 +33,7 @@
                 <constraint firstItem="b66-YQ-paJ" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="cKi-dv-HnS"/>
                 <constraint firstItem="b66-YQ-paJ" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="fle-2m-ZyB"/>
             </constraints>
+            <point key="canvasLocation" x="568" y="347"/>
         </view>
     </objects>
 </document>
