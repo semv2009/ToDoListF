@@ -2,7 +2,7 @@
 //  LoadingViewController.swift
 //  ToDoList
 //
-//  Created by developer on 06.04.16.
+//  Created by developer on 07.04.16.
 //  Copyright © 2016 developer. All rights reserved.
 //
 
@@ -19,14 +19,6 @@ class LoadingViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    init() {
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        preconditionFailure("init(coder:) has not been implemented")
     }
     
 

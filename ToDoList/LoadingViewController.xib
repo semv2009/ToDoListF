@@ -7,22 +7,31 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoadingViewController" customModule="ToDoList" customModuleProvider="target">
             <connections>
-                <outlet property="view" destination="iN0-l3-epB" id="qWK-nd-KTU"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB">
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="RQ5-df-wUH">
-                    <rect key="frame" x="290" y="290" width="20" height="20"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6J6-db-P2L">
+                    <rect key="frame" x="261" y="318" width="79" height="27"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                    <color key="textColor" red="0.1429443514" green="0.42843995419999997" blue="0.12143357320000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="b66-YQ-paJ">
+                    <rect key="frame" x="282" y="281" width="37" height="37"/>
+                    <color key="color" red="0.14294435136267758" green="0.42843995418848169" blue="0.12143357316533139" alpha="1" colorSpace="calibratedRGB"/>
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="RQ5-df-wUH" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="scf-aD-MYl"/>
-                <constraint firstItem="RQ5-df-wUH" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="wj0-F0-dVO"/>
+                <constraint firstItem="6J6-db-P2L" firstAttribute="top" secondItem="b66-YQ-paJ" secondAttribute="bottom" id="0fJ-MF-VDJ"/>
+                <constraint firstItem="b66-YQ-paJ" firstAttribute="centerX" secondItem="6J6-db-P2L" secondAttribute="centerX" id="C7f-JL-t70"/>
+                <constraint firstItem="b66-YQ-paJ" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="cKi-dv-HnS"/>
+                <constraint firstItem="b66-YQ-paJ" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="fle-2m-ZyB"/>
             </constraints>
         </view>
     </objects>

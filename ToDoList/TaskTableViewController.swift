@@ -31,22 +31,22 @@ class TaskTableViewController: UITableViewController{
         return TasksFetchedResultsControllerDelegate(tableView: self.tableView)
     }()
     
-//    init(coreDataStack stack: CoreDataStack) {
-//        super.init(nibName: "TaskTableViewController", bundle: nil)
-//        self.stack = stack
-//    }
-//    
-//    required init?(coder aDecoder: NSCoder) {
-//        preconditionFailure("init(coder:) has not been implemented")
-//    }
+    init(coreDataStack stack: CoreDataStack) {
+        super.init(nibName: nil, bundle: nil)
+        self.stack = stack
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        preconditionFailure("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.registerNib(UINib(nibName: "TableViewCell", bundle: nil), forCellReuseIdentifier: "myCell")
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(TaskTableViewController.showCreateNewTaskController))
-        //tableView.registerNib(UINib(nibName: "TableViewCell", bundle: nil), forCellReuseIdentifier: StoreBoard.TableCellIdentifier)
+        
         do {
             try self.fetchedResultsController.performFetch()
-            print(fetchedResultsController.fetchedObjects?.count)
         } catch {
             print("Failed to fetch objects: \(error)")
         }
@@ -66,12 +66,6 @@ class TaskTableViewController: UITableViewController{
     
     // MARK: - Table view data source
     
-    private struct StoreBoard{
-        static let TableCellIdentifier = "TaskCell"
-        static let EditTaskSegue = "EditTask"
-    }
-
-    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return fetchedResultsController.sections?.count ?? 0
     }
@@ -81,18 +75,15 @@ class TaskTableViewController: UITableViewController{
     }
     
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        
         guard let cell =  cell as? TableViewCell else { fatalError("Cell is not registered") }
         
         if let task = fetchedResultsController.getElementForTableView(indexPath) as? Task{
-            print(task.name)
             cell.updateUI(task)
         }
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        guard let cell = (tableView.dequeueReusableCellWithIdentifier(StoreBoard.TableCellIdentifier, forIndexPath: indexPath)) as? TableViewCell
+        guard let cell = (tableView.dequeueReusableCellWithIdentifier("myCell", forIndexPath: indexPath)) as? TableViewCell
             else { fatalError("Cell is not registered") }
         
         return cell
@@ -102,7 +93,7 @@ class TaskTableViewController: UITableViewController{
         let createVC = CreateNewTaskViewController(coreDataStack: stack)
         let task = fetchedResultsController.getElementForTableView(indexPath) as? Task
         createVC.task = task
-        showViewController( UINavigationController(rootViewController: createVC), sender: self)
+        showViewController(UINavigationController(rootViewController: createVC), sender: self)
     }
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {

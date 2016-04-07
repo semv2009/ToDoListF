@@ -18,24 +18,12 @@ class TableViewCell: UITableViewCell {
     
     @IBOutlet weak var dateLabel: UILabel!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
     func updateUI(task: Task){
         if task.mark {
             let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: task.name)
             attributeString.addAttribute(NSStrikethroughStyleAttributeName, value: 2, range: NSMakeRange(0, attributeString.length))
             nameLabel.attributedText = attributeString
         }else{
-            print("task name = " + task.name)
             nameLabel.text = task.name
         }
          
@@ -52,7 +40,6 @@ class TableViewCell: UITableViewCell {
             hourLabel.text = hour
             dateLabel.text = date
         }else{
-            print("Bad date")
             hourLabel.text = ""
             dateLabel.text = ""
         }

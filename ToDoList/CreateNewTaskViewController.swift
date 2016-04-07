@@ -87,14 +87,6 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate{
         self.task?.importances = importanceArray[importancePiсker.selectedRowInComponent(0)]
         self.task?.mark = markSegmentedControl.selectedSegmentIndex == 0 ? false : true
         
-        do {
-            try moc.performAndWaitOrThrow {
-                try moc.saveContextAndWait()
-            }
-        } catch {
-            print("Error creating inital data: \(error)")
-        }
-        
         dismissViewControllerAnimated(true, completion: nil)
     }
     

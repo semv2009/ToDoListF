@@ -14,20 +14,11 @@ import BNRCoreDataStack
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    private let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
     var coreDataStack: CoreDataStack?
-    
-    private lazy var loadingVC: UIViewController = {
-        return self.mainStoryboard.instantiateViewControllerWithIdentifier("LoadingVC")
-    }()
-    private lazy var myCoreDataVC: TaskTableViewController = {
-          return self.mainStoryboard.instantiateViewControllerWithIdentifier("TVC") as! TaskTableViewController
-    }()
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        window?.rootViewController = loadingVC
-        
+        window?.rootViewController = UINavigationController(rootViewController: LoadingViewController())
         CoreDataStack.constructSQLiteStack(withModelName: "TaskModel") { result in
             switch result {
             case .Success(let stack):
@@ -36,16 +27,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 
                 let delay = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * NSEC_PER_SEC))
                 dispatch_after(delay, dispatch_get_main_queue()) {
-                    self.myCoreDataVC.stack = stack
-                    self.window?.rootViewController =
-                    UINavigationController(rootViewController: self.myCoreDataVC)
+                    let mainViewController = TaskTableViewController(coreDataStack: stack)
+                    self.window?.rootViewController = UINavigationController(rootViewController: mainViewController)
                 }
             case .Failure(let error):
                 assertionFailure("\(error)")
             }
         }
-        
         window?.makeKeyAndVisible()
+        
         return true
     }
 
