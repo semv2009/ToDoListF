@@ -8,10 +8,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TableViewCell" customModule="ToDoList" customModuleProvider="target">
             <connections>
-                <outlet property="dateLabel" destination="8FH-5b-74O" id="ecM-91-JZ8"/>
-                <outlet property="hourLabel" destination="pme-d5-dxx" id="xBf-FM-F1L"/>
-                <outlet property="nameLabel" destination="Ccu-jU-4Il" id="IeW-h6-B8I"/>
-                <outlet property="stikerView" destination="ha1-nP-09h" id="beW-VP-Bof"/>
+                <outlet property="nameLabel" destination="Ccu-jU-4Il" id="Ydi-wf-EtG"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -73,8 +70,8 @@
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
-                        <exclude reference="ggb-Rf-BCh"/>
                         <exclude reference="MaG-OG-5Ku"/>
+                        <exclude reference="ggb-Rf-BCh"/>
                     </mask>
                 </variation>
             </tableViewCellContentView>

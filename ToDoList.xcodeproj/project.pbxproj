@@ -12,12 +12,10 @@
 		8B42E40E1CA17EFC008E25F6 /* CreateNewTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B42E40D1CA17EFC008E25F6 /* CreateNewTaskViewController.swift */; };
 		8B4A8ABD1CB51A0B009CC202 /* TaskTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B4A8ABC1CB51A0B009CC202 /* TaskTableViewController.xib */; };
 		8B4A8AC41CB53270009CC202 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4A8AC21CB53270009CC202 /* TableViewCell.swift */; };
-		8B4A8AC51CB53270009CC202 /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B4A8AC31CB53270009CC202 /* TableViewCell.xib */; };
 		8B4A8AC81CB535CB009CC202 /* TableViewCellAttemp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4A8AC61CB535CB009CC202 /* TableViewCellAttemp.swift */; };
 		8B4A8AC91CB535CB009CC202 /* TableViewCellAttemp.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B4A8AC71CB535CB009CC202 /* TableViewCellAttemp.xib */; };
 		8B648A9D1CAFCB420097B0C7 /* CreateNewTaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B648A9C1CAFCB420097B0C7 /* CreateNewTaskViewController.xib */; };
 		8B6A542B1CA55F240087EA26 /* TaskModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8B6A54291CA55F240087EA26 /* TaskModel.xcdatamodeld */; };
-		8BB356881CA3C99D00FF58C9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB356871CA3C99D00FF58C9 /* Constants.swift */; };
 		8BEC8F361C92C716007A9DF4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEC8F351C92C716007A9DF4 /* AppDelegate.swift */; };
 		8BEC8F3B1C92C716007A9DF4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BEC8F391C92C716007A9DF4 /* Main.storyboard */; };
 		8BEC8F3D1C92C716007A9DF4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8BEC8F3C1C92C716007A9DF4 /* Assets.xcassets */; };
@@ -33,12 +31,10 @@
 		8B42E40D1CA17EFC008E25F6 /* CreateNewTaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateNewTaskViewController.swift; sourceTree = "<group>"; };
 		8B4A8ABC1CB51A0B009CC202 /* TaskTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskTableViewController.xib; sourceTree = "<group>"; };
 		8B4A8AC21CB53270009CC202 /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
-		8B4A8AC31CB53270009CC202 /* TableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
 		8B4A8AC61CB535CB009CC202 /* TableViewCellAttemp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCellAttemp.swift; sourceTree = "<group>"; };
 		8B4A8AC71CB535CB009CC202 /* TableViewCellAttemp.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewCellAttemp.xib; sourceTree = "<group>"; };
 		8B648A9C1CAFCB420097B0C7 /* CreateNewTaskViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateNewTaskViewController.xib; sourceTree = "<group>"; };
 		8B6A542A1CA55F240087EA26 /* TaskModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TaskModel.xcdatamodel; sourceTree = "<group>"; };
-		8BB356871CA3C99D00FF58C9 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		8BEC8F321C92C716007A9DF4 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BEC8F351C92C716007A9DF4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8BEC8F3A1C92C716007A9DF4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -84,10 +80,9 @@
 			children = (
 				8B648A9C1CAFCB420097B0C7 /* CreateNewTaskViewController.xib */,
 				8B4A8ABC1CB51A0B009CC202 /* TaskTableViewController.xib */,
-				8B4A8AC21CB53270009CC202 /* TableViewCell.swift */,
-				8B4A8AC31CB53270009CC202 /* TableViewCell.xib */,
-				8B4A8AC61CB535CB009CC202 /* TableViewCellAttemp.swift */,
 				8B4A8AC71CB535CB009CC202 /* TableViewCellAttemp.xib */,
+				8B4A8AC61CB535CB009CC202 /* TableViewCellAttemp.swift */,
+				8B4A8AC21CB53270009CC202 /* TableViewCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -129,7 +124,6 @@
 				8BEC8F351C92C716007A9DF4 /* AppDelegate.swift */,
 				8BEC8F4E1C92E276007A9DF4 /* TaskTableViewController.swift */,
 				8B42E40D1CA17EFC008E25F6 /* CreateNewTaskViewController.swift */,
-				8BB356871CA3C99D00FF58C9 /* Constants.swift */,
 				8BEC8F391C92C716007A9DF4 /* Main.storyboard */,
 				8BEC8F3C1C92C716007A9DF4 /* Assets.xcassets */,
 				8BEC8F411C92C716007A9DF4 /* Info.plist */,
@@ -209,7 +203,6 @@
 				8B4A8AC91CB535CB009CC202 /* TableViewCellAttemp.xib in Resources */,
 				8B648A9D1CAFCB420097B0C7 /* CreateNewTaskViewController.xib in Resources */,
 				8BEC8F401C92C716007A9DF4 /* LaunchScreen.storyboard in Resources */,
-				8B4A8AC51CB53270009CC202 /* TableViewCell.xib in Resources */,
 				8B4A8ABD1CB51A0B009CC202 /* TaskTableViewController.xib in Resources */,
 				8BEC8F3D1C92C716007A9DF4 /* Assets.xcassets in Resources */,
 				8BEC8F3B1C92C716007A9DF4 /* Main.storyboard in Resources */,
@@ -275,7 +268,6 @@
 				8B6A542B1CA55F240087EA26 /* TaskModel.xcdatamodeld in Sources */,
 				8B42E40E1CA17EFC008E25F6 /* CreateNewTaskViewController.swift in Sources */,
 				8B4A8AC41CB53270009CC202 /* TableViewCell.swift in Sources */,
-				8BB356881CA3C99D00FF58C9 /* Constants.swift in Sources */,
 				8B2D672F1CAE65C100EAF77C /* Importance.swift in Sources */,
 				8B4A8AC81CB535CB009CC202 /* TableViewCellAttemp.swift in Sources */,
 				8B2D672D1CAE659000EAF77C /* Task.swift in Sources */,

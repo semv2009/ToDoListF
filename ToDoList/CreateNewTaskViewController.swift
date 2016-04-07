@@ -20,8 +20,8 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate{
     @IBOutlet weak var markSegmentedControl: UISegmentedControl!
     
     var doneButton: UIBarButtonItem!
-    var datePiker = UIDatePicker()
-    var importancePiker = UIPickerView()
+    var datePiсker = UIDatePicker()
+    var importancePiсker = UIPickerView()
     
     var importanceArray: [Importance]?
     var importanceNames: [String]?
@@ -65,7 +65,7 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate{
         nameTextField.delegate = self
         dateTextField.delegate = self
         importanceTextField.delegate = self
-        importancePiker.delegate = self
+        importancePiсker.delegate = self
         
         updateUI()
     }
@@ -83,8 +83,8 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate{
         }
         
         self.task?.name = nameTextField.text!
-        self.task?.date = datePiker.date
-        self.task?.importances = importanceArray[importancePiker.selectedRowInComponent(0)]
+        self.task?.date = datePiсker.date
+        self.task?.importances = importanceArray[importancePiсker.selectedRowInComponent(0)]
         self.task?.mark = markSegmentedControl.selectedSegmentIndex == 0 ? false : true
         
         do {
@@ -112,9 +112,9 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate{
     func textFieldDidBeginEditing(textField: UITextField) {
         switch textField{
             case dateTextField:
-                textField.inputView = datePiker
-                datePiker.addTarget(self, action: #selector(CreateNewTaskViewController.datePikerChanged(_:)), forControlEvents: .ValueChanged)
-            case importanceTextField: textField.inputView = importancePiker
+                textField.inputView = datePiсker
+                datePiсker.addTarget(self, action: #selector(CreateNewTaskViewController.datePikerChanged(_:)), forControlEvents: .ValueChanged)
+            case importanceTextField: textField.inputView = importancePiсker
             case nameTextField: textField.addTarget(self, action: #selector(CreateNewTaskViewController.nameTextChanged(_:)), forControlEvents: .EditingChanged)
             default: break
         }
@@ -137,25 +137,25 @@ class CreateNewTaskViewController: UIViewController,UITextFieldDelegate{
             nameTextField.text = task.name
             if let date = task.date{
                 dateTextField.text = date.getDateForTextField()
-                datePiker.date = date
+                datePiсker.date = date
             }
             
             if let importances = task.importances, let importanceArray = importanceArray {
                 let indexImportance  = importanceArray.count - 1 - importances.priority.integerValue
                 importanceTextField.text = importanceArray[indexImportance].name
-                importancePiker.selectRow(indexImportance, inComponent: 0, animated: false)
+                importancePiсker.selectRow(indexImportance, inComponent: 0, animated: false)
             }
             
             doneButton.enabled = true
             markSegmentedControl.selectedSegmentIndex = task.mark ? 1 : 0
         }else{
             self.title = "Create task"
-            datePiker.date = NSDate()
-            dateTextField.text = datePiker.date.getDateForTextField()
+            datePiсker.date = NSDate()
+            dateTextField.text = datePiсker.date.getDateForTextField()
             
             if let importanceArray = importanceArray {
                 importanceTextField.text = importanceArray[0].name
-                importancePiker.selectRow(0, inComponent: 0, animated: false)
+                importancePiсker.selectRow(0, inComponent: 0, animated: false)
             }
         }
     }
