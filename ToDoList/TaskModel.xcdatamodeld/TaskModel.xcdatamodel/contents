@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15E65" minimumToolsVersion="Xcode 7.0">
-    <entity name="Importance" representedClassName=".Importance" syncable="YES">
-        <attribute name="color" attributeType="String" syncable="YES"/>
-        <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="priority" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-    </entity>
     <entity name="Task" representedClassName=".Task" syncable="YES">
         <attribute name="date" attributeType="Date" syncable="YES"/>
         <attribute name="mark" attributeType="Boolean" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
-        <relationship name="importances" maxCount="1" deletionRule="Nullify" destinationEntity="Importance" syncable="YES"/>
+        <attribute name="priority" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Importance" positionX="-1116" positionY="144" width="128" height="90"/>
         <element name="Task" positionX="-650" positionY="-162" width="128" height="105"/>
     </elements>
 </model>

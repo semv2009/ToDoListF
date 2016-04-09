@@ -23,13 +23,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             switch result {
             case .Success(let stack):
                 self.coreDataStack = stack
-                self.seedInitialData()
-                
-                let delay = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * NSEC_PER_SEC))
-                dispatch_after(delay, dispatch_get_main_queue()) {
+                dispatch_async(dispatch_get_main_queue()){
                     let mainViewController = TaskTableViewController(coreDataStack: stack)
                     self.window?.rootViewController = UINavigationController(rootViewController: mainViewController)
                 }
+
             case .Failure(let error):
                 assertionFailure("\(error)")
             }
@@ -48,40 +46,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try stack.mainQueueContext.save()
         } catch{
             print(error)
-        }
-    }
-    
-    private func seedInitialData() {
-        guard let stack = coreDataStack else {
-            assertionFailure("Stack was not setup first")
-            return
-        }
-        
-        let moc = stack.newBackgroundWorkerMOC()
-        do {
-            try moc.performAndWaitOrThrow {
-                let importances = try Importance.allInContext(moc)
-                if importances.count == 0 {
-                    let lowImportance = Importance(managedObjectContext: moc)
-                    lowImportance.name = "Low"
-                    lowImportance.priority = 2
-                    lowImportance.color = "0 0 1 0.8"
-                    
-                    let normalImportance = Importance(managedObjectContext: moc)
-                    normalImportance.name = "Normal"
-                    normalImportance.priority = 1
-                    normalImportance.color = "0 1 0 0.8"
-                    
-                    let hightlImportance = Importance(managedObjectContext: moc)
-                    hightlImportance.name = "Hight"
-                    hightlImportance.priority = 0
-                    hightlImportance.color = "1 0 0 0.8"
-                    
-                    try moc.saveContextAndWait()
-                }
-            }
-        } catch {
-            print("Error creating inital data: \(error)")
         }
     }
 }

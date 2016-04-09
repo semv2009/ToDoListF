@@ -33,8 +33,8 @@
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="ST9-Gl-dsF">
                     <rect key="frame" x="8" y="395" width="584" height="29"/>
                     <segments>
-                        <segment title="Unsolved"/>
-                        <segment title="Solved"/>
+                        <segment title="Not Done"/>
+                        <segment title="Done"/>
                     </segments>
                 </segmentedControl>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="23J-X4-0cI">

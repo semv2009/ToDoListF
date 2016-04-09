@@ -17,7 +17,7 @@ class TaskTableViewController: UITableViewController{
     private lazy var fetchedResultsController: FetchedResultsController<Task> = {
         let fetchRequest = NSFetchRequest(entityName: Task.entityName)
         let solvedSortDescriptor = NSSortDescriptor(key: "mark", ascending: true)
-        let prioritySortDescriptor = NSSortDescriptor(key: "importances.priority", ascending: true)
+        let prioritySortDescriptor = NSSortDescriptor(key: "priority", ascending: false)
         let dateSortDescriptor = NSSortDescriptor(key: "date", ascending: true)
         fetchRequest.sortDescriptors = [solvedSortDescriptor, prioritySortDescriptor, dateSortDescriptor]
         let frc = FetchedResultsController<Task>(fetchRequest: fetchRequest, managedObjectContext: self.stack.mainQueueContext, sectionNameKeyPath: nil)
@@ -40,7 +40,7 @@ class TaskTableViewController: UITableViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.registerNib(UINib(nibName: "TableViewCell", bundle: nil), forCellReuseIdentifier: "myCell")
+        tableView.registerNib(UINib(nibName: "TaskTableViewCell", bundle: nil), forCellReuseIdentifier: "myCell")
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(TaskTableViewController.showCreateNewTaskController))
         
         do {
@@ -73,21 +73,21 @@ class TaskTableViewController: UITableViewController{
     }
     
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        guard let cell =  cell as? TableViewCell else { fatalError("Cell is not registered") }
-        if let task = fetchedResultsController.getElementForTableView(indexPath) as? Task{
+        guard let cell =  cell as? TaskTableViewCell else { fatalError("Cell is not registered") }
+        if let task = fetchedResultsController.getObject(indexPath) as? Task{
             cell.updateUI(task)
         }
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        guard let cell = (tableView.dequeueReusableCellWithIdentifier("myCell", forIndexPath: indexPath)) as? TableViewCell
+        guard let cell = (tableView.dequeueReusableCellWithIdentifier("myCell", forIndexPath: indexPath)) as? TaskTableViewCell
             else { fatalError("Cell is not registered") }
         return cell
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let createVC = CreateNewTaskViewController(coreDataStack: stack)
-        if let task = fetchedResultsController.getElementForTableView(indexPath) as? Task{
+        if let task = fetchedResultsController.getObject(indexPath) as? Task{
             createVC.task = task
         }
         showViewController(UINavigationController(rootViewController: createVC), sender: self)
@@ -98,16 +98,17 @@ class TaskTableViewController: UITableViewController{
     }
 
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        guard let task = fetchedResultsController.getElementForTableView(indexPath) as? Task else { fatalError("Don't get task from fetchedResultsController") }
-        let nameAction = (task.mark) ? "Unmarked" : "Marked"
+        guard let task = fetchedResultsController.getObject(indexPath) as? Task else { fatalError("Don't get task from fetchedResultsController") }
+        let nameDoneAction = (task.mark) ? "Not Done" : " Done "
         
-        let checkAction = UITableViewRowAction(style: .Normal, title: nameAction) { [unowned self, task](action, indexPath) in
+        let doneAction = UITableViewRowAction(style: .Normal, title: nameDoneAction) { [unowned self, task](action, indexPath) in
             task.mark = !task.mark
             self.tableView?.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
         }
-        checkAction.backgroundColor = UIColor.greenColor()
+        doneAction.backgroundColor = UIColor.greenColor()
         
-        let deleteAction = UITableViewRowAction(style: .Normal, title: "Delete") {[unowned self,task] (action, indexPath) in
+        let nameDeleteAction = (task.mark) ? " Delete " : "Delete"
+        let deleteAction = UITableViewRowAction(style: .Normal, title: nameDeleteAction) {[unowned self,task] (action, indexPath) in
             let alert = UIAlertController(title: "Warning", message: "Do you want delete task?", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Delete", style: UIAlertActionStyle.Destructive,
                 handler: { (UIAlertAction) -> Void in
@@ -119,12 +120,12 @@ class TaskTableViewController: UITableViewController{
         }
         deleteAction.backgroundColor = UIColor.redColor()
         
-        return [deleteAction,checkAction]
+        return [deleteAction,doneAction]
     }
 }
 
 extension FetchedResultsController{
-    func getElementForTableView(indexPath: NSIndexPath) -> NSManagedObject{
+    func getObject(indexPath: NSIndexPath) -> NSManagedObject{
         guard let sections = self.sections else { fatalError("Don't get sessions from fetchedResultsController") }
         return sections[indexPath.section].objects[indexPath.row]
     }

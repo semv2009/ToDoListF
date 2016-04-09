@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TableViewCell: UITableViewCell {
+class TaskTableViewCell: UITableViewCell {
 
     @IBOutlet weak var nameLabel: UILabel!
     
@@ -27,21 +27,15 @@ class TableViewCell: UITableViewCell {
             nameLabel.text = task.name
         }
          
-        if let importance = task.importances{
-            stikerView.backgroundColor = UIColor(CIColor: CIColor(string: importance.color))
-        }
+        let importance = Importances.getImportance(priority: task.priority)
+        stikerView.backgroundColor = UIColor(CIColor: CIColor(string: importance.color))
      
-        if let date = task.date{
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "hh:mm"
-            let hour = dateFormatter.stringFromDate(date)
-            dateFormatter.dateFormat = "dd MMM"
-            let date = dateFormatter.stringFromDate(date)
-            hourLabel.text = hour
-            dateLabel.text = date
-        }else{
-            hourLabel.text = ""
-            dateLabel.text = ""
-        }
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "hh:mm"
+        let hour = dateFormatter.stringFromDate(task.date)
+        dateFormatter.dateFormat = "dd MMM"
+        let date = dateFormatter.stringFromDate(task.date)
+        hourLabel.text = hour
+        dateLabel.text = date
     }
 }

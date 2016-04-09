@@ -8,11 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		8B2D672D1CAE659000EAF77C /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2D672C1CAE659000EAF77C /* Task.swift */; };
-		8B2D672F1CAE65C100EAF77C /* Importance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2D672E1CAE65C100EAF77C /* Importance.swift */; };
 		8B2EAB431CB66B9D0015DD53 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2EAB411CB66B9D0015DD53 /* LoadingViewController.swift */; };
 		8B2EAB441CB66B9D0015DD53 /* LoadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B2EAB421CB66B9D0015DD53 /* LoadingViewController.xib */; };
-		8B2EAB461CB66CD80015DD53 /* TableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B2EAB451CB66CD80015DD53 /* TableViewCell.xib */; };
-		8B2EAB481CB66CE00015DD53 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2EAB471CB66CE00015DD53 /* TableViewCell.swift */; };
+		8B2EAB461CB66CD80015DD53 /* TaskTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B2EAB451CB66CD80015DD53 /* TaskTableViewCell.xib */; };
+		8B2EAB481CB66CE00015DD53 /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2EAB471CB66CE00015DD53 /* TaskTableViewCell.swift */; };
 		8B2EAB4A1CB682E00015DD53 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B2EAB491CB682E00015DD53 /* Storyboard.storyboard */; };
 		8B42E40E1CA17EFC008E25F6 /* CreateNewTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B42E40D1CA17EFC008E25F6 /* CreateNewTaskViewController.swift */; };
 		8B4A8ABD1CB51A0B009CC202 /* TaskTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8B4A8ABC1CB51A0B009CC202 /* TaskTableViewController.xib */; };
@@ -27,11 +26,10 @@
 /* Begin PBXFileReference section */
 		111B7BB3AB382B649E5A7FDE /* Pods-ToDoList.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ToDoList.release.xcconfig"; path = "Pods/Target Support Files/Pods-ToDoList/Pods-ToDoList.release.xcconfig"; sourceTree = "<group>"; };
 		8B2D672C1CAE659000EAF77C /* Task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
-		8B2D672E1CAE65C100EAF77C /* Importance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Importance.swift; sourceTree = "<group>"; };
 		8B2EAB411CB66B9D0015DD53 /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		8B2EAB421CB66B9D0015DD53 /* LoadingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingViewController.xib; sourceTree = "<group>"; };
-		8B2EAB451CB66CD80015DD53 /* TableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewCell.xib; sourceTree = "<group>"; };
-		8B2EAB471CB66CE00015DD53 /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		8B2EAB451CB66CD80015DD53 /* TaskTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskTableViewCell.xib; sourceTree = "<group>"; };
+		8B2EAB471CB66CE00015DD53 /* TaskTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		8B2EAB491CB682E00015DD53 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
 		8B42E40D1CA17EFC008E25F6 /* CreateNewTaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateNewTaskViewController.swift; sourceTree = "<group>"; };
 		8B4A8ABC1CB51A0B009CC202 /* TaskTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskTableViewController.xib; sourceTree = "<group>"; };
@@ -75,25 +73,100 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		8B648A991CAFC88E0097B0C7 /* View */ = {
+		8B349C1D1CB9096800AC67FF /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				8B648A9C1CAFCB420097B0C7 /* CreateNewTaskViewController.xib */,
-				8B4A8ABC1CB51A0B009CC202 /* TaskTableViewController.xib */,
-				8B2EAB451CB66CD80015DD53 /* TableViewCell.xib */,
-				8B2EAB421CB66B9D0015DD53 /* LoadingViewController.xib */,
+				8B349C1F1CB909FD00AC67FF /* TaskTableView */,
+				8B349C1E1CB909AE00AC67FF /* CreateNewTask */,
+				8B349C201CB90A1F00AC67FF /* Loading */,
 			);
-			name = View;
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
-		8B6A54281CA55EF80087EA26 /* Task Model */ = {
+		8B349C1E1CB909AE00AC67FF /* CreateNewTask */ = {
 			isa = PBXGroup;
 			children = (
-				8B6A54291CA55F240087EA26 /* TaskModel.xcdatamodeld */,
-				8B2D672C1CAE659000EAF77C /* Task.swift */,
-				8B2D672E1CAE65C100EAF77C /* Importance.swift */,
+				8B42E40D1CA17EFC008E25F6 /* CreateNewTaskViewController.swift */,
+				8B648A9C1CAFCB420097B0C7 /* CreateNewTaskViewController.xib */,
 			);
-			name = "Task Model";
+			name = CreateNewTask;
+			sourceTree = "<group>";
+		};
+		8B349C1F1CB909FD00AC67FF /* TaskTableView */ = {
+			isa = PBXGroup;
+			children = (
+				8BEC8F4E1C92E276007A9DF4 /* TaskTableViewController.swift */,
+				8B4A8ABC1CB51A0B009CC202 /* TaskTableViewController.xib */,
+			);
+			name = TaskTableView;
+			sourceTree = "<group>";
+		};
+		8B349C201CB90A1F00AC67FF /* Loading */ = {
+			isa = PBXGroup;
+			children = (
+				8B2EAB411CB66B9D0015DD53 /* LoadingViewController.swift */,
+				8B2EAB421CB66B9D0015DD53 /* LoadingViewController.xib */,
+			);
+			name = Loading;
+			sourceTree = "<group>";
+		};
+		8B349C211CB90A6600AC67FF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8B349C221CB90A8200AC67FF /* Cell */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		8B349C221CB90A8200AC67FF /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				8B349C231CB90B2A00AC67FF /* TaskTableView */,
+			);
+			name = Cell;
+			sourceTree = "<group>";
+		};
+		8B349C231CB90B2A00AC67FF /* TaskTableView */ = {
+			isa = PBXGroup;
+			children = (
+				8B2EAB471CB66CE00015DD53 /* TaskTableViewCell.swift */,
+				8B2EAB451CB66CD80015DD53 /* TaskTableViewCell.xib */,
+			);
+			name = TaskTableView;
+			sourceTree = "<group>";
+		};
+		8B349C241CB90C8E00AC67FF /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				8BEC8F351C92C716007A9DF4 /* AppDelegate.swift */,
+				8BEC8F411C92C716007A9DF4 /* Info.plist */,
+			);
+			name = Application;
+			sourceTree = "<group>";
+		};
+		8B349C251CB90CC000AC67FF /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				8B2EAB491CB682E00015DD53 /* Storyboard.storyboard */,
+			);
+			name = Storyboards;
+			sourceTree = "<group>";
+		};
+		8B349C261CB90D0400AC67FF /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8BEC8F3C1C92C716007A9DF4 /* Assets.xcassets */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		8B6A54281CA55EF80087EA26 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8B2D672C1CAE659000EAF77C /* Task.swift */,
+				8B6A54291CA55F240087EA26 /* TaskModel.xcdatamodeld */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 		8BEC8F291C92C716007A9DF4 = {
@@ -117,26 +190,14 @@
 		8BEC8F341C92C716007A9DF4 /* ToDoList */ = {
 			isa = PBXGroup;
 			children = (
-				8B648A991CAFC88E0097B0C7 /* View */,
-				8B6A54281CA55EF80087EA26 /* Task Model */,
-				8BEC8F471C92C8CF007A9DF4 /* Task */,
-				8BEC8F351C92C716007A9DF4 /* AppDelegate.swift */,
-				8B2EAB471CB66CE00015DD53 /* TableViewCell.swift */,
-				8BEC8F4E1C92E276007A9DF4 /* TaskTableViewController.swift */,
-				8B42E40D1CA17EFC008E25F6 /* CreateNewTaskViewController.swift */,
-				8B2EAB411CB66B9D0015DD53 /* LoadingViewController.swift */,
-				8BEC8F3C1C92C716007A9DF4 /* Assets.xcassets */,
-				8BEC8F411C92C716007A9DF4 /* Info.plist */,
-				8B2EAB491CB682E00015DD53 /* Storyboard.storyboard */,
+				8B349C1D1CB9096800AC67FF /* ViewControllers */,
+				8B6A54281CA55EF80087EA26 /* Models */,
+				8B349C211CB90A6600AC67FF /* Views */,
+				8B349C251CB90CC000AC67FF /* Storyboards */,
+				8B349C241CB90C8E00AC67FF /* Application */,
+				8B349C261CB90D0400AC67FF /* Resources */,
 			);
 			path = ToDoList;
-			sourceTree = "<group>";
-		};
-		8BEC8F471C92C8CF007A9DF4 /* Task */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Task;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -202,7 +263,7 @@
 			files = (
 				8B2EAB441CB66B9D0015DD53 /* LoadingViewController.xib in Resources */,
 				8B648A9D1CAFCB420097B0C7 /* CreateNewTaskViewController.xib in Resources */,
-				8B2EAB461CB66CD80015DD53 /* TableViewCell.xib in Resources */,
+				8B2EAB461CB66CD80015DD53 /* TaskTableViewCell.xib in Resources */,
 				8B4A8ABD1CB51A0B009CC202 /* TaskTableViewController.xib in Resources */,
 				8BEC8F3D1C92C716007A9DF4 /* Assets.xcassets in Resources */,
 				8B2EAB4A1CB682E00015DD53 /* Storyboard.storyboard in Resources */,
@@ -265,10 +326,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BEC8F4F1C92E276007A9DF4 /* TaskTableViewController.swift in Sources */,
-				8B2EAB481CB66CE00015DD53 /* TableViewCell.swift in Sources */,
+				8B2EAB481CB66CE00015DD53 /* TaskTableViewCell.swift in Sources */,
 				8B6A542B1CA55F240087EA26 /* TaskModel.xcdatamodeld in Sources */,
 				8B42E40E1CA17EFC008E25F6 /* CreateNewTaskViewController.swift in Sources */,
-				8B2D672F1CAE65C100EAF77C /* Importance.swift in Sources */,
 				8B2EAB431CB66B9D0015DD53 /* LoadingViewController.swift in Sources */,
 				8B2D672D1CAE659000EAF77C /* Task.swift in Sources */,
 				8BEC8F361C92C716007A9DF4 /* AppDelegate.swift in Sources */,

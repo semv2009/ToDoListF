@@ -23,9 +23,7 @@ class CreateNewTaskViewController: UIViewController{
     var datePiсker = UIDatePicker()
     var importancePiсker = UIPickerView()
     
-    var importanceArray: [Importance]?
-    var importanceNames: [String]?
-    
+    var importanceArray: [Importance] = Importances.allImportance
     
     init(coreDataStack stack: CoreDataStack) {
         super.init(nibName: nil, bundle: nil)
@@ -38,34 +36,8 @@ class CreateNewTaskViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let stack = stack else {
-            assertionFailure("Stack was not setup first")
-            return
-        }
-        let moc = stack.mainQueueContext
-        do {
-            try moc.performAndWaitOrThrow {
-                let fetchRequest = Importance.fetchRequestForEntity(inContext: moc)
-                fetchRequest.sortDescriptors = [NSSortDescriptor(key: "priority", ascending: false)]
-                self.importanceArray = try moc.executeFetchRequest(fetchRequest) as? [Importance]
-            }
-        } catch {
-            print("Cannot load importances: \(error)")
-        }
-        
-        guard let importanceArray = self.importanceArray else { fatalError("Don't have importance") }
-        importanceNames = importanceArray.map({$0.name})
-        
-        doneButton =  UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(CreateNewTaskViewController.done))
-        navigationItem.rightBarButtonItem = doneButton
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(CreateNewTaskViewController.dismiss))
-        doneButton.enabled = false
-        
-        nameTextField.delegate = self
-        dateTextField.delegate = self
-        importanceTextField.delegate = self
-        importancePiсker.delegate = self
-        
+        createBarButtons()
+        configureTextFields()
         updateUI()
     }
     
@@ -76,7 +48,6 @@ class CreateNewTaskViewController: UIViewController{
     }
     
     @objc private func done() {
-        guard let importanceArray = importanceArray else { fatalError("Don't have importance") }
         let moc = stack.mainQueueContext
         if let _ = self.task{} else{
             self.task = Task(managedObjectContext: moc)
@@ -85,7 +56,7 @@ class CreateNewTaskViewController: UIViewController{
         guard let text = nameTextField.text else { fatalError("Don't have text") }
         self.task?.name = text
         self.task?.date = datePiсker.date
-        self.task?.importances = importanceArray[importancePiсker.selectedRowInComponent(0)]
+        self.task?.priority = importanceArray[importancePiсker.selectedRowInComponent(0)].priority
         self.task?.mark = markSegmentedControl.selectedSegmentIndex == 0 ? false : true
         
         dismissViewControllerAnimated(true, completion: nil)
@@ -93,20 +64,17 @@ class CreateNewTaskViewController: UIViewController{
     
     // MARK: - UIHelper
     
+    
     func updateUI(){
         if let task = self.task {
             self.title = "Edit task"
             nameTextField.text = task.name
-            if let date = task.date{
-                dateTextField.text = date.getDateForTextField()
-                datePiсker.date = date
-            }
             
-            if let importances = task.importances, let importanceNames = importanceNames {
-                let indexImportance  = importanceNames.count - 1 - importances.priority.integerValue
-                importanceTextField.text = importanceNames[indexImportance]
-                importancePiсker.selectRow(indexImportance, inComponent: 0, animated: false)
-            }
+            dateTextField.text = task.date.getDateForTextField()
+            datePiсker.date = task.date
+            
+            importanceTextField.text = Importances.getImportance(priority: task.priority).name
+            importancePiсker.selectRow(task.priority, inComponent: 0, animated: false)
             
             doneButton.enabled = true
             markSegmentedControl.selectedSegmentIndex = task.mark ? 1 : 0
@@ -116,18 +84,36 @@ class CreateNewTaskViewController: UIViewController{
             datePiсker.date = NSDate()
             dateTextField.text = datePiсker.date.getDateForTextField()
             
-            if let importanceArray = importanceArray {
-                importanceTextField.text = importanceArray[0].name
-                importancePiсker.selectRow(0, inComponent: 0, animated: false)
-            }
+            importanceTextField.text = importanceArray[0].name
+            importancePiсker.selectRow(0, inComponent: 0, animated: false)
         }
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        closeKeyborad()
+    func configureTextFields(){
+        dateTextField.delegate = self
+        dateTextField.inputView = datePiсker
+        datePiсker.addTarget(self, action: #selector(CreateNewTaskViewController.datePickerChanged(_:)), forControlEvents: .ValueChanged)
+        
+        importanceTextField.delegate = self
+        importancePiсker.delegate = self
+        importanceTextField.inputView = importancePiсker
+        
+        nameTextField.delegate = self
+        nameTextField.addTarget(self, action: #selector(CreateNewTaskViewController.nameTextChanged(_:)), forControlEvents: .EditingChanged)
     }
     
-    func closeKeyborad(){
+    func createBarButtons(){
+        doneButton =  UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(CreateNewTaskViewController.done))
+        navigationItem.rightBarButtonItem = doneButton
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(CreateNewTaskViewController.dismiss))
+        doneButton.enabled = false
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        closeKeyboard()
+    }
+    
+    func closeKeyboard(){
         self.view.endEditing(true)
     }
 }
@@ -144,18 +130,8 @@ extension CreateNewTaskViewController: UITextFieldDelegate{
         }
         return true
     }
-    func textFieldDidBeginEditing(textField: UITextField) {
-        switch textField{
-        case dateTextField:
-            textField.inputView = datePiсker
-            datePiсker.addTarget(self, action: #selector(CreateNewTaskViewController.datePikerChanged(_:)), forControlEvents: .ValueChanged)
-        case importanceTextField: textField.inputView = importancePiсker
-        case nameTextField: textField.addTarget(self, action: #selector(CreateNewTaskViewController.nameTextChanged(_:)), forControlEvents: .EditingChanged)
-        default: break
-        }
-    }
     
-    func datePikerChanged(sender:UIDatePicker){
+    func datePickerChanged(sender:UIDatePicker){
         dateTextField.text = sender.date.getDateForTextField()
     }
     
@@ -172,18 +148,15 @@ extension CreateNewTaskViewController: UIPickerViewDelegate{
     }
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int{
-        guard let importanceNames = importanceNames else { fatalError("Don't have mportance") }
-        return importanceNames.count
+        return importanceArray.count
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?{
-        guard let importanceNames = importanceNames else { fatalError("Don't have mportance") }
-        return importanceNames[row]
+        return importanceArray[row].name
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        guard let importanceNames = importanceNames else { fatalError("Don't have task...") }
-        importanceTextField.text = importanceNames[row]
+        importanceTextField.text = importanceArray[row].name
     }
 }
 
