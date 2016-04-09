@@ -30,6 +30,7 @@ class CreateNewTaskViewController: UIViewController{
         self.stack = stack
     }
     
+    
     required init?(coder aDecoder: NSCoder) {
         preconditionFailure("init(coder:) has not been implemented")
     }
